@@ -26,6 +26,11 @@ Route::middleware('auth')->group(function () {
     Route::get("/home", function(){
         return Inertia::render("Home");
     });
+
+    //categories 
+    Route::get("/categories", function(){
+        return Inertia::render("Dashboard/Categories");
+    });
 });
 
 

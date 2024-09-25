@@ -24,14 +24,20 @@ const DashboardLayout = ({ children }) => {
         <>
             <DashboardNavBar />
             <div className={`h-screen ${showSidebar ? "bg-slate-400" : ""}`}>
-                <div className="flex">
+                
+                <div className="flex h-[100%]">
                     <div
-                        className={`left pr-4  lg:w-[20%]  md:w-[35%] absolute top-0 hidden lg:block ${
+                        className={`left pr-4  lg:w-[20%]  md:w-[35%]  absolute top-0 hidden lg:block ${
                             showSidebar ? "md:block " : ""
                         }`}
                         ref={SideBarRef}
                     >
                         <LeftSideBar />
+                    </div>
+                    <div
+                        className={`left pr-4  lg:w-[24%]  md:w-[35%] hidden lg:block `}
+                    >
+                        
                     </div>
                     <div className="middle w-full">
                         <main>{children}</main>
