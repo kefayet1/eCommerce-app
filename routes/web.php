@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -23,16 +25,20 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get("/home", function(){
+    Route::get("/home", function () {
         return Inertia::render("Home");
     });
 
     //categories 
-    Route::get("/categories", function(){
-        return Inertia::render("Dashboard/Categories");
-    });
+    Route::get("/categories", [CategoryController::class, 'index']);
+    Route::post("/createCategory", [CategoryController::class, 'createCategory']);
+    Route::post("/deleteCategory", [CategoryController::class, 'destroy']);
+    Route::post("/editCategory", [CategoryController::class, 'editCategory']);
+
+    //product
+    Route::get('/product', [ProductController::class, 'index']);
 });
 
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
