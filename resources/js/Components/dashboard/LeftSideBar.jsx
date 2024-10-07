@@ -14,18 +14,15 @@ const LeftSideBar = () => {
     return (
         <div className="bg-darkies-Blue h-screen pt-3">
             <div className="flex flex-col ">
-                <NavDashLink name={'Overview'} url={url} to={"/dashboard"}>
+                <NavDashLink name={"Overview"} url={url} to={"/dashboard"}>
                     <PiChartPie size={"20px"} />
                 </NavDashLink>
                 <NavDashLink name={"Category"} url={url} to={"/categories"}>
                     <BsFillPeopleFill size={"20px"} />
                 </NavDashLink>
-                <NavLink className="text-medium font-semibold mx-2 px-5 py-3 rounded-md">
-                    <div className="flex">
-                        <FaAmericanSignLanguageInterpreting size={"20px"} />
-                        <span className="ml-2">Integrations</span>
-                    </div>
-                </NavLink>
+                <NavDashLink name={"Product"} url={url} to={"/products"}>
+                    <FaAmericanSignLanguageInterpreting size={"20px"} />
+                </NavDashLink>
                 <NavLink className="text-medium font-semibold mx-2 px-5 py-3 rounded-md">
                     <div className="flex">
                         <IoSettingsOutline size={"20px"} />

@@ -1,47 +1,234 @@
+import { router, useForm, usePage } from "@inertiajs/react";
+import { Autocomplete, TextField } from "@mui/material";
 import React from "react";
+import { useRef } from "react";
+import { useEffect } from "react";
+import { useState } from "react";
+import { CiImageOn } from "react-icons/ci";
 
-const TableItem = () => {
+const TableItem = ({ data }) => {
+    const [showEditFrom, setShowEditFrom] = useState(false);
+    const FormRef = useRef(null);
+    const ClickInput = useRef(null);
+    const {
+        data: formData,
+        setData: setFormData,
+        post,
+        progress,
+    } = useForm({
+        name: "",
+        price: "",
+        unit: "",
+        categoryId: 0,
+        image: null,
+    });
+    const [openMenu, setOpenMenu] = useState(false);
+    const { props } = usePage();
+    const handleDeleteProduct = () => {
+        router.post("/deleteProduct", { id: data.id });
+    };
+
+    const handleEditProduct = () => {
+        setShowEditFrom(!showEditFrom);
+        setFormData({
+            id: data.id,
+            name: data.productName,
+            price: data.price,
+            unit: data.unit,
+            categoryId: data.categoryId,
+            oldImage: data.img_url,
+        });
+    };
+    console.log(data.img_url);
+
+    const handleHideForm = (e) => {
+        if (FormRef.current && !FormRef.current.contains(e.target)) {
+            console.log("helle event");
+            setShowEditFrom(false);
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener("click", handleHideForm, true);
+
+        () => {
+            document.removeEventListener("click", handleHideForm, true);
+        };
+    }, []);
+
+    const handleEditFormSubmit = (e) => {
+        e.preventDefault();
+        post("/editProduct", {
+            preserveScroll: true,
+            onSuccess: () => {
+                setData({
+                    name: "",
+                    price: "",
+                    unit: "",
+                    categoryId: 0,
+                    image: null,
+                }),
+                setShowEditFrom(false);
+            },
+        });
+        setShowEditFrom(false);
+        setOpenMenu(false);
+    };
+
     return (
         <>
+            {showEditFrom && (
+                <div className="w-full h-screen flex justify-center items-center bg-[#11111194] absolute top-0 left-0 z-50">
+                    <div
+                        className="rounded-lg bg-white p-8 shadow lg:col-span-3 lg:p-12 md:h-3/5  md:w-5/6 lg:w-8/12 lg:ml-80"
+                        ref={FormRef}
+                    >
+                        <form className="space-y-4">
+                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                <div>
+                                    <label className="sr-only" for="email">
+                                        Name
+                                    </label>
+                                    <input
+                                        className="w-full rounded-lg border-gray-200 p-3 text-sm"
+                                        placeholder="Name"
+                                        type="text"
+                                        id="email"
+                                        value={formData.name}
+                                        onChange={(e) =>
+                                            setFormData("name", e.target.value)
+                                        }
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="sr-only" for="phone">
+                                        Price
+                                    </label>
+                                    <input
+                                        className="w-full rounded-lg border-gray-200 p-3 text-sm"
+                                        placeholder="Price"
+                                        type="number"
+                                        id="phone"
+                                        value={formData.price}
+                                        onChange={(e) =>
+                                            setFormData("price", e.target.value)
+                                        }
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                <div>
+                                    <label className="sr-only" for="email">
+                                        Unit
+                                    </label>
+                                    <input
+                                        className="w-full rounded-lg border-gray-200 p-3 text-sm"
+                                        placeholder="Unit"
+                                        type="number"
+                                        id="email"
+                                        value={formData.unit}
+                                        onChange={(e) =>
+                                            setFormData("unit", e.target.value)
+                                        }
+                                    />
+                                </div>
+
+                                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                    <Autocomplete
+                                        value={props?.categories.find(
+                                            (category) =>
+                                                category.id === data.categoryId
+                                        )}
+                                        onChange={(e, value) =>
+                                            setFormData("categoryId", value?.id)
+                                        }
+                                        disablePortal
+                                        options={props?.categories}
+                                        sx={{ width: 300 }}
+                                        renderInput={(params) => (
+                                            <TextField
+                                                {...params}
+                                                label="Movie"
+                                            />
+                                        )}
+                                    />
+                                </div>
+                            </div>
+
+                            <div>
+                                <div
+                                    className={`w-full border-2 py-2 ${
+                                        !formData.oldImage && "py-14"
+                                    } rounded-lg border-gray-200 text-sm flex items-center justify-center`}
+                                    placeholder="Message"
+                                    rows="8"
+                                    id="message"
+                                    onClick={() => ClickInput.current.click()}
+                                >
+                                    {formData.image || formData.oldImage ? (
+                                        <img
+                                            src={
+                                                formData.image
+                                                    ? URL.createObjectURL(
+                                                          formData.image
+                                                      )
+                                                    : `http://127.0.0.1:8000/${formData.oldImage}`
+                                            }
+                                            alt="Selected"
+                                            className="object-cover h-48 w-96"
+                                        />
+                                    ) : (
+                                        <CiImageOn size={70} />
+                                    )}
+                                    <input
+                                        type="file"
+                                        hidden
+                                        ref={ClickInput}
+                                        onChange={(e) =>
+                                            setFormData(
+                                                "image",
+                                                e.target.files[0]
+                                            )
+                                        }
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="mt-4">
+                                <button
+                                    onClick={handleEditFormSubmit}
+                                    className={`inline-block w-full rounded-lg ${
+                                        progress ? "bg-slate-700" : "bg-black"
+                                    } px-5 py-3 font-medium text-white sm:w-auto`}
+                                    disabled={progress}
+                                >
+                                    Save
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
             <tr
                 tabindex="0"
-                class="focus:outline-none h-16 border border-gray-100 rounded"
+                className="focus:outline-none h-16 border border-gray-100 rounded"
             >
                 <td>
-                    <div class="ml-5">
-                        <div class="bg-gray-200 rounded-sm w-5 h-5 flex flex-shrink-0 justify-center items-center relative">
-                            <input
-                                placeholder="checkbox"
-                                type="checkbox"
-                                class="focus:opacity-100 checkbox opacity-0 absolute cursor-pointer w-full h-full"
+                    <div className="ml-5 flex justify-center items-center h-20">
+                        <div className="bg-gray-200 rounded-sm w-5 h-5 flex flex-shrink-0 justify-center items-center relative">
+                            <img
+                                src={`http://127.0.0.1:8000/${data.img_url}`}
+                                alt=""
                             />
-                            <div class="check-icon hidden bg-indigo-700 text-white rounded-sm">
-                                <svg
-                                    class="icon icon-tabler icon-tabler-check"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="20"
-                                    height="20"
-                                    viewBox="0 0 24 24"
-                                    stroke-width="1.5"
-                                    stroke="currentColor"
-                                    fill="none"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                >
-                                    <path
-                                        stroke="none"
-                                        d="M0 0h24v24H0z"
-                                    ></path>
-                                    <path d="M5 12l5 5l10 -10"></path>
-                                </svg>
-                            </div>
                         </div>
                     </div>
                 </td>
-                <td class="">
-                    <div class="flex items-center pl-5">
-                        <p class="text-base font-medium leading-none text-gray-700 mr-2">
-                            Marketing Keynote Presentation
+                <td className="">
+                    <div className="flex items-center pl-5">
+                        <p className="text-base font-medium leading-none text-gray-700 mr-2">
+                            {data.productName}
                         </p>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -65,179 +252,48 @@ const TableItem = () => {
                         </svg>
                     </div>
                 </td>
-                <td class="pl-24">
-                    <div class="flex items-center">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="20"
-                            height="20"
-                            viewBox="0 0 20 20"
-                            fill="none"
-                        >
-                            <path
-                                d="M9.16667 2.5L16.6667 10C17.0911 10.4745 17.0911 11.1922 16.6667 11.6667L11.6667 16.6667C11.1922 17.0911 10.4745 17.0911 10 16.6667L2.5 9.16667V5.83333C2.5 3.99238 3.99238 2.5 5.83333 2.5H9.16667"
-                                stroke="#52525B"
-                                stroke-width="1.25"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            ></path>
-                            <circle
-                                cx="7.50004"
-                                cy="7.49967"
-                                r="1.66667"
-                                stroke="#52525B"
-                                stroke-width="1.25"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            ></circle>
-                        </svg>
-                        <p class="text-sm leading-none text-gray-600 ml-2">
-                            Urgent
+                <td className="pl-24">
+                    <div className="flex items-center">
+                        <p className="text-sm leading-none text-gray-600 ml-2">
+                            {data.price}
                         </p>
                     </div>
                 </td>
-                <td class="pl-5">
-                    <div class="flex items-center">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="20"
-                            height="20"
-                            viewBox="0 0 20 20"
-                            fill="none"
-                        >
-                            <path
-                                d="M7.5 5H16.6667"
-                                stroke="#52525B"
-                                stroke-width="1.25"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            ></path>
-                            <path
-                                d="M7.5 10H16.6667"
-                                stroke="#52525B"
-                                stroke-width="1.25"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            ></path>
-                            <path
-                                d="M7.5 15H16.6667"
-                                stroke="#52525B"
-                                stroke-width="1.25"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            ></path>
-                            <path
-                                d="M4.16669 5V5.00667"
-                                stroke="#52525B"
-                                stroke-width="1.25"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            ></path>
-                            <path
-                                d="M4.16669 10V10.0067"
-                                stroke="#52525B"
-                                stroke-width="1.25"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            ></path>
-                            <path
-                                d="M4.16669 15V15.0067"
-                                stroke="#52525B"
-                                stroke-width="1.25"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            ></path>
-                        </svg>
-                        <p class="text-sm leading-none text-gray-600 ml-2">
-                            04/07
+                <td className="pl-5">
+                    <div className="flex items-center">
+                        <p className="text-sm leading-none text-gray-600 ml-2">
+                            {data.unit}
                         </p>
                     </div>
                 </td>
-                <td class="pl-5">
-                    <div class="flex items-center">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="20"
-                            height="20"
-                            viewBox="0 0 20 20"
-                            fill="none"
-                        >
-                            <path
-                                d="M3.33331 17.4998V6.6665C3.33331 6.00346 3.59671 5.36758 4.06555 4.89874C4.53439 4.4299 5.17027 4.1665 5.83331 4.1665H14.1666C14.8297 4.1665 15.4656 4.4299 15.9344 4.89874C16.4033 5.36758 16.6666 6.00346 16.6666 6.6665V11.6665C16.6666 12.3295 16.4033 12.9654 15.9344 13.4343C15.4656 13.9031 14.8297 14.1665 14.1666 14.1665H6.66665L3.33331 17.4998Z"
-                                stroke="#52525B"
-                                stroke-width="1.25"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            ></path>
-                            <path
-                                d="M10 9.1665V9.17484"
-                                stroke="#52525B"
-                                stroke-width="1.25"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            ></path>
-                            <path
-                                d="M6.66669 9.1665V9.17484"
-                                stroke="#52525B"
-                                stroke-width="1.25"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            ></path>
-                            <path
-                                d="M13.3333 9.1665V9.17484"
-                                stroke="#52525B"
-                                stroke-width="1.25"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            ></path>
-                        </svg>
-                        <p class="text-sm leading-none text-gray-600 ml-2">
-                            23
+                <td className="pl-5">
+                    <div className="flex items-center">
+                        <p className="text-sm leading-none text-gray-600 ml-2">
+                            {data.categoryName}
                         </p>
                     </div>
                 </td>
-                <td class="pl-5">
-                    <div class="flex items-center">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="20"
-                            height="20"
-                            viewBox="0 0 20 20"
-                            fill="none"
-                        >
-                            <path
-                                d="M12.5 5.83339L7.08333 11.2501C6.75181 11.5816 6.56556 12.0312 6.56556 12.5001C6.56556 12.9689 6.75181 13.4185 7.08333 13.7501C7.41485 14.0816 7.86449 14.2678 8.33333 14.2678C8.80217 14.2678 9.25181 14.0816 9.58333 13.7501L15 8.33339C15.663 7.67034 16.0355 6.77107 16.0355 5.83339C16.0355 4.8957 15.663 3.99643 15 3.33339C14.337 2.67034 13.4377 2.29785 12.5 2.29785C11.5623 2.29785 10.663 2.67034 10 3.33339L4.58333 8.75005C3.58877 9.74461 3.03003 11.0935 3.03003 12.5001C3.03003 13.9066 3.58877 15.2555 4.58333 16.2501C5.57789 17.2446 6.92681 17.8034 8.33333 17.8034C9.73985 17.8034 11.0888 17.2446 12.0833 16.2501L17.5 10.8334"
-                                stroke="#52525B"
-                                stroke-width="1.25"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            ></path>
-                        </svg>
-                        <p class="text-sm leading-none text-gray-600 ml-2">
-                            04/07
-                        </p>
+                <td className="pl-5">
+                    <div className="py-3 px-3 text-sm focus:outline-none leading-none text-red-700 bg-red-100 rounded">
+                        {new Date(data.created_at).toLocaleString()}
                     </div>
                 </td>
-                <td class="pl-5">
-                    <button class="py-3 px-3 text-sm focus:outline-none leading-none text-red-700 bg-red-100 rounded">
-                        Due today at 18:00
-                    </button>
-                </td>
-                <td class="pl-4">
-                    <button class="focus:ring-2 focus:ring-offset-2 focus:ring-red-300 text-sm leading-none text-gray-600 py-3 px-5 bg-gray-100 rounded hover:bg-gray-200 focus:outline-none">
+                <td className="pl-4">
+                    <button className="focus:ring-2 focus:ring-offset-2 focus:ring-red-300 text-sm leading-none text-gray-600 py-3 px-5 bg-gray-100 rounded hover:bg-gray-200 focus:outline-none">
                         View
                     </button>
                 </td>
                 <td>
-                    <div class="relative px-5 pt-2">
+                    <div className="relative px-5 pt-2">
                         <button
-                            class="focus:ring-2 rounded-md focus:outline-none"
+                            className="focus:ring-2 rounded-md focus:outline-none"
                             onclick="dropdownFunction(this)"
                             role="button"
                             aria-label="option"
+                            onClick={() => setOpenMenu(!openMenu)}
                         >
                             <svg
-                                class="dropbtn"
+                                className="dropbtn"
                                 onclick="dropdownFunction(this)"
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="20"
@@ -268,24 +324,28 @@ const TableItem = () => {
                                 ></path>
                             </svg>
                         </button>
-                        <div class="dropdown-content bg-white shadow w-24 absolute z-30 right-0 mr-6 hidden">
-                            <div
-                                tabindex="0"
-                                class="focus:outline-none focus:text-indigo-600 text-xs w-full hover:bg-indigo-700 py-4 px-4 cursor-pointer hover:text-white"
-                            >
-                                <p>Edit</p>
+                        {openMenu && (
+                            <div className="dropdown-content bg-white shadow w-24 absolute z-30 right-0 mr-6 ">
+                                <div
+                                    tabindex="0"
+                                    className="focus:outline-none focus:text-indigo-600 text-xs w-full hover:bg-indigo-700 py-4 px-4 cursor-pointer hover:text-white"
+                                    onClick={handleEditProduct}
+                                >
+                                    <p>Edit</p>
+                                </div>
+                                <div
+                                    tabindex="0"
+                                    className="focus:outline-none focus:text-indigo-600 text-xs w-full hover:bg-indigo-700 py-4 px-4 cursor-pointer hover:text-white"
+                                    onClick={handleDeleteProduct}
+                                >
+                                    <p>Delete</p>
+                                </div>
                             </div>
-                            <div
-                                tabindex="0"
-                                class="focus:outline-none focus:text-indigo-600 text-xs w-full hover:bg-indigo-700 py-4 px-4 cursor-pointer hover:text-white"
-                            >
-                                <p>Delete</p>
-                            </div>
-                        </div>
+                        )}
                     </div>
                 </td>
             </tr>
-            <tr class="h-3"></tr>
+            <tr className="h-3"></tr>
         </>
     );
 };

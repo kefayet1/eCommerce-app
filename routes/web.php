@@ -36,7 +36,10 @@ Route::middleware('auth')->group(function () {
     Route::post("/editCategory", [CategoryController::class, 'editCategory']);
 
     //product
-    Route::get('/product', [ProductController::class, 'index']);
+    Route::get('/products', [ProductController::class, 'index']);
+    Route::post('/createProduct', [ProductController::class, 'CreateProduct']);
+    Route::post('/deleteProduct', [ProductController::class, 'destroy']);
+    Route::post('/editProduct', [ProductController::class, 'editProduct']);
 });
 
 
