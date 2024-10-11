@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -40,6 +41,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/createProduct', [ProductController::class, 'CreateProduct']);
     Route::post('/deleteProduct', [ProductController::class, 'destroy']);
     Route::post('/editProduct', [ProductController::class, 'editProduct']);
+
+    //SalePage
+    Route::get("/salePage", [InvoiceController::class, "index"]);
 });
 
 

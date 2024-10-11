@@ -3,7 +3,7 @@ import NavLink from "../NavLink";
 import { PiChartPie } from "react-icons/pi";
 import { BsFillPeopleFill } from "react-icons/bs";
 import { FaAmericanSignLanguageInterpreting } from "react-icons/fa";
-import { IoSettingsOutline } from "react-icons/io5";
+import { IoBagHandleOutline, IoBagHandleSharp, IoSettingsOutline } from "react-icons/io5";
 import { MdOutlineAccountCircle } from "react-icons/md";
 import { Link, usePage } from "@inertiajs/react";
 import NavDashLink from "./NavDashLink";
@@ -23,12 +23,9 @@ const LeftSideBar = () => {
                 <NavDashLink name={"Product"} url={url} to={"/products"}>
                     <FaAmericanSignLanguageInterpreting size={"20px"} />
                 </NavDashLink>
-                <NavLink className="text-medium font-semibold mx-2 px-5 py-3 rounded-md">
-                    <div className="flex">
-                        <IoSettingsOutline size={"20px"} />
-                        <span className="ml-2">Integrations</span>
-                    </div>
-                </NavLink>
+                <NavDashLink name={"Sale Page"} url={url} to={"/salePage"}>
+                    <IoBagHandleSharp  size={"20px"} />
+                </NavDashLink>
                 <NavLink className="text-medium font-semibold mx-2 px-5 py-3 rounded-md">
                     <div className="flex">
                         <MdOutlineAccountCircle size={"20px"} />
