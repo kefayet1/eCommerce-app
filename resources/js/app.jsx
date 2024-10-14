@@ -8,6 +8,8 @@ import {
     DashboardActionContext,
     DashboardActionContextProvider,
 } from "@/Context/DashboardActionContext";
+import { Provider } from "react-redux";
+import store from "./app/store";
 
 const appName = import.meta.env.VITE_APP_NAME || "Laravel";
 
@@ -23,7 +25,9 @@ createInertiaApp({
 
         root.render(
             <DashboardActionContextProvider>
-                <App {...props} />
+                <Provider store={store}>
+                    <App {...props} />
+                </Provider>
             </DashboardActionContextProvider>
         );
     },

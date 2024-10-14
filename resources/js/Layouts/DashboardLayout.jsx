@@ -25,6 +25,7 @@ const DashboardLayout = ({ children, pageName }) => {
         };
     }, []);
 
+
     return (
         <>
             <DashboardNavBar />

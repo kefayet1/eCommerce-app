@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use App\Models\Invoice;
 use App\Models\InvoiceProduct;
 use Exception;
@@ -15,11 +16,21 @@ class InvoiceController extends Controller
     //
     public function index(Request $request)
     {
-        return Inertia::render("Dashboard/SalePage");
+        $product = DB::table("products")
+            ->where('products.user_id', '=', Auth::user()->id)
+            ->select("products.name as productName", "products.price", "products.unit", "products.created_at", "products.id")
+            ->paginate(10, ['*'], 'customers_page');
+        $customer = DB::table("customers")
+            ->where("user_id", "=", Auth::user()->id)
+            ->select('customers.id', 'customers.name', 'customers.email')
+            ->paginate(10, ['*'], 'products_page');
+
+        return Inertia::render("Dashboard/SalePage", ['products' => $product, 'customers' => $customer]);
     }
 
     public function createInvoice(Request $request)
     {
+        // dd($request->input("customer_id"));
         DB::beginTransaction();
 
         try {
@@ -40,14 +51,13 @@ class InvoiceController extends Controller
                 InvoiceProduct::create([
                     'invoice_id' => $invoiceId,
                     'user_id' => Auth::user()->id,
-                    'product_id' => $singleProduct['product_id'],
-                    'qty' => $singleProduct['qty'],
-                    'sale_price' => $singleProduct['sale_price']
+                    'product_id' => $singleProduct['id'],
+                    'qty' => $singleProduct['unit'],
+                    'sale_price' => $singleProduct['totalPrice']
                 ]);
             }
 
             DB::commit();
-            return 1;
         } catch (Exception $e) {
             DB::rollBack();
             return 0;

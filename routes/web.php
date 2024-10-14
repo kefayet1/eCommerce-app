@@ -44,6 +44,7 @@ Route::middleware('auth')->group(function () {
 
     //SalePage
     Route::get("/salePage", [InvoiceController::class, "index"]);
+    Route::post("/createInvoice", [InvoiceController::class, "createInvoice"]);
 });
 
 
