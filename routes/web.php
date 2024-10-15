@@ -4,6 +4,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SalePageController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -43,8 +44,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/editProduct', [ProductController::class, 'editProduct']);
 
     //SalePage
-    Route::get("/salePage", [InvoiceController::class, "index"]);
-    Route::post("/createInvoice", [InvoiceController::class, "createInvoice"]);
+    Route::get("/salePage", [SalePageController::class, "index"]);
+    Route::post("/createInvoice", [SalePageController::class, "createInvoice"]);
+
+    //Invoice
+    Route::get("/invoice", [InvoiceController::class, "index"]);
+    Route::get("/invoiceModal/{id}", [InvoiceController::class, "getInvoice"]);
+    Route::get("/invoicePdf", [InvoiceController::class, "invoicePdf"]);
+    Route::post("/deleteInvoice", [InvoiceController::class, "deleteInvoice"]);
 });
 
 

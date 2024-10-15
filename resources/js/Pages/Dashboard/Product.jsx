@@ -61,10 +61,10 @@ const Product = () => {
     // Get the current page from the pagination data
     const currentPage = props.products.current_page;
 
-    const handlePageChange = (event, value) => {
-        event.preventDefault();
-        Inertia.visit(`/products?page=${value}`);
-    };
+    // const handlePageChange = (event, value) => {
+    //     event.preventDefault();
+    //     Inertia.visit(`/products?page=${value}`);
+    // };
 
     console.log(props, "products");
 

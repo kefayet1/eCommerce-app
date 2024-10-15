@@ -16,16 +16,13 @@ class InvoiceController extends Controller
     //
     public function index(Request $request)
     {
-        $product = DB::table("products")
-            ->where('products.user_id', '=', Auth::user()->id)
-            ->select("products.name as productName", "products.price", "products.unit", "products.created_at", "products.id")
-            ->paginate(10, ['*'], 'customers_page');
-        $customer = DB::table("customers")
-            ->where("user_id", "=", Auth::user()->id)
-            ->select('customers.id', 'customers.name', 'customers.email')
-            ->paginate(10, ['*'], 'products_page');
+        $invoices = DB::table("invoices")
+            ->leftJoin("customers", "invoices.customer_id", "=", "customers.id")
+            ->where("invoices.user_id", "=", Auth::user()->id)
+            ->select("invoices.id", "invoices.total", "invoices.discount", "invoices.vat", "invoices.payable", "customers.name", "customers.mobile")
+            ->paginate(10);
 
-        return Inertia::render("Dashboard/SalePage", ['products' => $product, 'customers' => $customer]);
+        return Inertia::render("Dashboard/Invoice", ['invoices' => $invoices]);
     }
 
     public function createInvoice(Request $request)
@@ -62,5 +59,33 @@ class InvoiceController extends Controller
             DB::rollBack();
             return 0;
         }
+    }
+
+    public function getInvoice($invoiceId)
+    {
+        $invoice = DB::table("invoices")
+            ->leftJoin("invoice_products", "invoices.id", "=", "invoice_products.invoice_id")
+            ->leftJoin("customers", "invoices.customer_id", "=", "customers.id")
+            ->where("invoices.id", "=", $invoiceId)
+            ->first();
+
+        $invoice_product = DB::table("invoice_products")
+            ->leftJoin("products", "invoice_products.product_id", "=", "products.id")
+            ->where("invoice_products.invoice_id", "=", $invoiceId)
+            ->get();
+
+        return Inertia::render("Dashboard/InvoiceModal", ["invoice" => $invoice, "products" => $invoice_product]);
+    }
+
+    public function invoicePdf()
+    {
+        return Inertia::render("Dashboard/InvoicePdf");
+    }
+
+    public function deleteInvoice(Request $request)
+    {
+        Invoice::where('user_id', "=", Auth::user()->id)
+            ->where('id', '=', $request->input('id'))->delete();
+        ;
     }
 }

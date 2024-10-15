@@ -2,7 +2,7 @@ import React from "react";
 import NavLink from "../NavLink";
 import { PiChartPie } from "react-icons/pi";
 import { BsFillPeopleFill } from "react-icons/bs";
-import { FaAmericanSignLanguageInterpreting } from "react-icons/fa";
+import { FaAmericanSignLanguageInterpreting, FaFileInvoice } from "react-icons/fa";
 import {
     IoBagHandleOutline,
     IoBagHandleSharp,
@@ -30,12 +30,9 @@ const LeftSideBar = () => {
                 <NavDashLink name={"Sale Page"} url={url} to={"/salePage"}>
                     <IoBagHandleSharp size={"20px"} />
                 </NavDashLink>
-                <NavLink className="text-medium font-semibold mx-2 px-5 py-3 rounded-md">
-                    <div className="flex">
-                        <MdOutlineAccountCircle size={"20px"} />
-                        <span className="ml-2">Account</span>
-                    </div>
-                </NavLink>
+                <NavDashLink name={"Invoice"} url={url} to={"/invoice"}>
+                    <FaFileInvoice size={"20px"} />
+                </NavDashLink>
             </div>
         </div>
     );
