@@ -58,7 +58,8 @@ const DashboardLayout = ({ children, pageName }) => {
                                         </div>
                                         <div className="">
                                             {pathname !== "/invoice" &&
-                                                pathname !== "/salePage" && 
+                                                pathname !== "/salePage" &&
+                                                pathname !== "/dashboard" && 
                                                 !pathname.includes("invoiceModal") &&(
                                                     <button
                                                         onClick={() =>
