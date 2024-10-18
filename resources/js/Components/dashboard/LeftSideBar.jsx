@@ -6,9 +6,10 @@ import { FaAmericanSignLanguageInterpreting, FaFileInvoice } from "react-icons/f
 import {
     IoBagHandleOutline,
     IoBagHandleSharp,
+    IoPeopleOutline,
     IoSettingsOutline,
 } from "react-icons/io5";
-import { MdOutlineAccountCircle } from "react-icons/md";
+import { MdOutlineAccountCircle, MdOutlineCategory } from "react-icons/md";
 import { Link, usePage } from "@inertiajs/react";
 import NavDashLink from "./NavDashLink";
 
@@ -22,7 +23,7 @@ const LeftSideBar = () => {
                     <PiChartPie size={"20px"} />
                 </NavDashLink>
                 <NavDashLink name={"Category"} url={url} to={"/categories"}>
-                    <BsFillPeopleFill size={"20px"} />
+                    <MdOutlineCategory size={"20px"} />
                 </NavDashLink>
                 <NavDashLink name={"Product"} url={url} to={"/products"}>
                     <FaAmericanSignLanguageInterpreting size={"20px"} />
@@ -32,6 +33,9 @@ const LeftSideBar = () => {
                 </NavDashLink>
                 <NavDashLink name={"Invoice"} url={url} to={"/invoice"}>
                     <FaFileInvoice size={"20px"} />
+                </NavDashLink>
+                <NavDashLink name={"Customers"} url={url} to={"/customer"}>
+                    <IoPeopleOutline size={"20px"} />
                 </NavDashLink>
             </div>
         </div>

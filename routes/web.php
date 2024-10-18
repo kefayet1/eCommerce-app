@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\OverviewController;
 use App\Http\Controllers\ProductController;
@@ -54,6 +55,11 @@ Route::middleware('auth')->group(function () {
     Route::get("/invoiceModal/{id}", [InvoiceController::class, "getInvoice"]);
     Route::get("/invoicePdf", [InvoiceController::class, "invoicePdf"]);
     Route::post("/deleteInvoice", [InvoiceController::class, "deleteInvoice"]);
+
+    //Customers
+    Route::get("/customer", [CustomerController::class, "index"]);
+    Route::post("/createCustomers", [CustomerController::class, "createCustomers"]);
+    Route::post("/deleteCustomer", [CustomerController::class, "deleteCustomers"]);
 });
 
 

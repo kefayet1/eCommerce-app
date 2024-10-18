@@ -10,7 +10,7 @@ import {
 } from "react-icons/md";
 
 const Overview = () => {
-    const {props} = usePage();
+    const { props } = usePage();
     const { a, b, showForm, setShowForm } = useContext(DashboardActionContext);
     useEffect(() => {
         return setShowForm(false);
@@ -18,8 +18,8 @@ const Overview = () => {
     console.log(props);
     return (
         <div>
-            <div className="container flex gap-4">
-                <div className="product flex w-60 justify-between p-5 shadow-lg rounded-md">
+            <div className="container flex gap-8 justify-between">
+                <div className="product flex w-1/4  justify-between py-10 px-5 shadow-lg rounded-md">
                     <div className="left">
                         <MdOutlineProductionQuantityLimits size={25} />
                     </div>
@@ -28,7 +28,7 @@ const Overview = () => {
                         <h3>Product</h3>
                     </div>
                 </div>
-                <div className="category flex w-60 justify-between p-5 shadow-lg rounded-md">
+                <div className="category flex w-1/4 justify-between py-10 px-5 shadow-lg rounded-md">
                     <div className="left">
                         <MdCategory size={25} />
                     </div>
@@ -37,7 +37,7 @@ const Overview = () => {
                         <h3>Category</h3>
                     </div>
                 </div>
-                <div className="totalSale flex w-60 justify-between p-5 shadow-lg rounded-md">
+                <div className="totalSale flex w-1/4  justify-between py-10 px-5 shadow-lg rounded-md">
                     <div className="left">
                         <MdPointOfSale size={25} />
                     </div>
@@ -46,7 +46,7 @@ const Overview = () => {
                         <h3>Total Sale</h3>
                     </div>
                 </div>
-                <div className="invoice flex w-60 justify-between p-5 shadow-lg rounded-md">
+                <div className="invoice flex w-1/4 justify-between py-10 px-5 shadow-lg rounded-md">
                     <div className="left">
                         <FaFileInvoice size={25} />
                     </div>
