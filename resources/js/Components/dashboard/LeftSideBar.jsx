@@ -3,6 +3,9 @@ import NavLink from "../NavLink";
 import { PiChartPie } from "react-icons/pi";
 import { BsFillPeopleFill } from "react-icons/bs";
 import { FaAmericanSignLanguageInterpreting, FaFileInvoice } from "react-icons/fa";
+import { TbBrandSafari } from "react-icons/tb";
+
+
 import {
     IoBagHandleOutline,
     IoBagHandleSharp,
@@ -37,6 +40,9 @@ const LeftSideBar = () => {
                 <NavDashLink name={"Customers"} url={url} to={"/customer"}>
                     <IoPeopleOutline size={"20px"} />
                 </NavDashLink>
+                {/* <NavDashLink name={"Customers"} url={url} to={"/customer"}>
+                    <TbBrandSafari/>
+                </NavDashLink> */}
             </div>
         </div>
     );
