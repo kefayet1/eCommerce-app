@@ -86,5 +86,4 @@ class ProductController extends Controller
             'img_url' => $img_url ? $img_url : $request->input("oldImage"),
         ]);
     }
-
 }

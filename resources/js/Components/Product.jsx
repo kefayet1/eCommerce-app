@@ -3,11 +3,12 @@ import React from "react";
 import { BsStarFill } from "react-icons/bs";
 import { MdStar } from "react-icons/md";
 
-const Product = () => {
+const Product = ({productDetails}) => {
+
     return (
         <div className="rounded-lg border border-gray-200 bg-white shadow-sm">
         <div className="h-56 w-full">
-          <Link href="/product">
+          <Link href={`/product/${productDetails.id}`}>
             <img className="mx-auto h-full rounded-t-lg" src="https://images.unsplash.com/photo-1729547276610-12eea4c798e9?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" />
           </Link>
         </div>
@@ -41,7 +42,7 @@ const Product = () => {
             </div>
           </div>
 
-          <Link href="/product" className="lg:text-lg text-sm font-bold leading-tight text-gray-900 hover:underline">Apple iMac 27", 1TB HDD, Retina 5K Display, M3 Max</Link>
+          <Link href={`/product/${productDetails.id}`} className="lg:text-lg text-sm font-bold leading-tight text-gray-900 hover:underline">{productDetails?.name}</Link>
 
           <div className="mt-2 flex items-center gap-2">
             <div className="">
@@ -83,7 +84,7 @@ const Product = () => {
           </ul>
 
           <div className="mt-3 flex items-end justify-between gap-4">
-            <p className="text-x font-extrabold leading-tight text-gray-900">$1,699</p>
+            <p className="text-x font-extrabold leading-tight text-gray-900">{productDetails?.price}</p>
 
             <button type="button" className="inline-flex items-center rounded-md bg-primary-700 px-3 py-2.5 text-sm font-medium text-white bg-black hover:bg-primary-800 focus:outline-none focus:ring-4  focus:ring-primary-300">
               <svg className="-ms-2 me-2 h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">

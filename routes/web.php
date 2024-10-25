@@ -5,19 +5,16 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\OverviewController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductEcomController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SalePageController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Ecom/Home');
-});
+Route::get('/', [ProductEcomController::class, "index"]);
 
-Route::get('/product', function () {
-    return Inertia::render('Ecom/ProductPage');
-});
+Route::get('/product/{product_id}', [ProductEcomController::class, "getSingleProduct"]);
 
 Route::get('/filterProduct', function () {
     return Inertia::render('Ecom/ProductFilterPage');

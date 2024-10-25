@@ -1,11 +1,15 @@
 import Description from "@/Components/Description";
 import Reviews from "@/Components/Reviews";
 import EcommerceLayout from "@/Layouts/EcommerceLayout";
+import { usePage } from "@inertiajs/react";
 import { useState } from "react";
 
 const ProductPage = () => {
+    const { props } = usePage();
     const [tabs, setTabs] = useState("description");
-    const [carosalImage, setCarosalImage] = useState("https://plus.unsplash.com/premium_photo-1727942416727-9f16462ef11b?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+    const [carosalImage, setCarosalImage] = useState(
+        "https://plus.unsplash.com/premium_photo-1727942416727-9f16462ef11b?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    );
 
     return (
         <section className="max-w-[1320px] lg:w-[80%] w-[95%] mx-auto py-12 sm:py-16">
@@ -80,7 +84,11 @@ const ProductPage = () => {
                                             className="h-full w-full object-cover"
                                             src="https://plus.unsplash.com/premium_photo-1727942416727-9f16462ef11b?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                                             alt=""
-                                            onClick={()=> setCarosalImage("https://plus.unsplash.com/premium_photo-1727942416727-9f16462ef11b?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")}
+                                            onClick={() =>
+                                                setCarosalImage(
+                                                    "https://plus.unsplash.com/premium_photo-1727942416727-9f16462ef11b?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                                )
+                                            }
                                         />
                                     </button>
                                     <button
@@ -91,7 +99,11 @@ const ProductPage = () => {
                                             className="h-full w-full object-cover"
                                             src="https://plus.unsplash.com/premium_photo-1727942421523-13ef5b5ebd78?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                                             alt=""
-                                            onClick={()=> setCarosalImage("https://plus.unsplash.com/premium_photo-1727942421523-13ef5b5ebd78?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")}
+                                            onClick={() =>
+                                                setCarosalImage(
+                                                    "https://plus.unsplash.com/premium_photo-1727942421523-13ef5b5ebd78?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                                )
+                                            }
                                         />
                                     </button>
                                     <button
@@ -102,7 +114,11 @@ const ProductPage = () => {
                                             className="h-full w-full object-cover"
                                             src="https://plus.unsplash.com/premium_photo-1727942420443-c4b7fe7d87e4?q=80&w=1035&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                                             alt=""
-                                            onClick={()=> setCarosalImage("https://plus.unsplash.com/premium_photo-1727942420443-c4b7fe7d87e4?q=80&w=1035&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")}
+                                            onClick={() =>
+                                                setCarosalImage(
+                                                    "https://plus.unsplash.com/premium_photo-1727942420443-c4b7fe7d87e4?q=80&w=1035&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                                )
+                                            }
                                         />
                                     </button>
                                 </div>
@@ -112,7 +128,7 @@ const ProductPage = () => {
 
                     <div className="lg:col-span-2 lg:row-span-2 lg:row-end-2">
                         <h1 className="sm: text-2xl font-bold text-gray-900 sm:text-3xl">
-                            Afro-Brazillian Coffee
+                            {props.product.name}
                         </h1>
 
                         <div className="mt-5 flex items-center">
@@ -269,7 +285,7 @@ const ProductPage = () => {
 
                         <div className="mt-10 flex flex-col items-center justify-between space-y-4 border-t border-b py-4 sm:flex-row sm:space-y-0">
                             <div className="flex items-end">
-                                <h1 className="text-3xl font-bold">$60.50</h1>
+                                <h1 className="text-3xl font-bold">{props.product.price}</h1>
                                 <span className="text-base">/month</span>
                             </div>
 
@@ -368,7 +384,11 @@ const ProductPage = () => {
                             </nav>
                         </div>
 
-                        {tabs === "description" ? <Description /> : <Reviews />}
+                        {tabs === "description" ? (
+                            <Description des={props.product.short_des} />
+                        ) : (
+                            <Reviews />
+                        )}
                     </div>
                 </div>
             </div>
@@ -376,6 +396,6 @@ const ProductPage = () => {
     );
 };
 
-ProductPage.layout = page => <EcommerceLayout children={page}/>
+ProductPage.layout = (page) => <EcommerceLayout children={page} />;
 
 export default ProductPage;
