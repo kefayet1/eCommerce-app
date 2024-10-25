@@ -17,6 +17,7 @@ class ProductFactory extends Factory
     public function definition(): array
     {
         $boolean = fake()->boolean();
+        $remark = ["popular", "new", "top", "featured", "trending", "regular"];
         return [
             //
             'name' => fake()->name(),
@@ -26,7 +27,7 @@ class ProductFactory extends Factory
             "discount" => fake()->boolean(),
             "discount_price" => $boolean ? fake()->randomNumber(2) : "",
             "star" => fake()->randomFloat(1,5),
-            "remark" => fake()->boolean() ? "popular" : "new",
+            "remark" => $remark[rand(0,5)],
             'img_url' => 'https://random-image-pepebigotes.vercel.app/api/random-image',
             'user_id' => rand(1, 20),
             'category_id' => rand(1, 10)

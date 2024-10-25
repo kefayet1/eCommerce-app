@@ -19,7 +19,7 @@ return new class extends Migration {
             $table->string("discount_price", 50);
             $table->string('unit', 50);
             $table->float("star");
-            $table->enum("remark", ["popular", "new", "top", "special", "trending", "regular"]);
+            $table->enum("remark", ["popular", "new", "top", "featured", "trending", "regular"]);
             $table->string('img_url', 100);
 
             $table->foreignId("user_id")->constrained('users')

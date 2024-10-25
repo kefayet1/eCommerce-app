@@ -1,22 +1,26 @@
 import Footer from "@/Components/ecommerce/Footer";
 import { hideMenu } from "@/features/showMoblieSlice";
+import { Badge } from "@mui/material";
 import { BsSearch } from "react-icons/bs";
 import { IoSearchSharp } from "react-icons/io5";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "@inertiajs/react";
 
 const EcommerceLayout = ({ children }) => {
     const dispatch = useDispatch();
     return (
         <>
             <div className="border-b border-black">
-                <nav className="max-w-[1320px] w-[80%] mx-auto flex items-center justify-between py-3">
+                <nav className="max-w-[1320px] lg:w-[80%] w-[95%] mx-auto flex items-center justify-between py-3">
                     <div className="left">
-                        <img
-                            src="https://kohler.scene7.com/is/image/Kohler/KohlerLogoImage?$CorpSecondary$&crop=110,0,23778,16000&wid=590&hei=397&wid=590&hei=397"
-                            className="w-20"
-                        />
+                        <Link href="/">
+                            <img
+                                src="https://kohler.scene7.com/is/image/Kohler/KohlerLogoImage?$CorpSecondary$&crop=110,0,23778,16000&wid=590&hei=397&wid=590&hei=397"
+                                className="w-20"
+                            />
+                        </Link>
                     </div>
                     <div className="middle lg:block hidden">
                         <div class="relative text-gray-600">
@@ -44,16 +48,21 @@ const EcommerceLayout = ({ children }) => {
                             </button>
                         </div>
                         <div className="md:hidden sm:block">
-                        <RxHamburgerMenu size={"24"} onClick={() => dispatch(hideMenu())}/>
+                            <RxHamburgerMenu
+                                size={"24"}
+                                onClick={() => dispatch(hideMenu())}
+                            />
                         </div>
                         <div className="">
-                            <MdOutlineShoppingCart size="25" />
+                            <Badge badgeContent={4} color="primary">
+                                <MdOutlineShoppingCart size="25" />
+                            </Badge>
                         </div>
                     </div>
                 </nav>
             </div>
             <main>{children}</main>
-            <Footer/>
+            <Footer />
         </>
     );
 };

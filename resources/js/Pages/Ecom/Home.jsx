@@ -41,7 +41,7 @@ const Home = () => {
     }, []);
 
     return (
-        <div className="max-w-[1320px] w-[80%] mx-auto mb-20">
+        <div className="max-w-[1320px] lg:w-[80%] w-[95%] mx-auto mb-20">
             <div
                 id="drawer-right-example"
                 class={`fixed top-0 right-${

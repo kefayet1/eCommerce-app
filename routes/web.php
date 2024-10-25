@@ -19,6 +19,10 @@ Route::get('/product', function () {
     return Inertia::render('Ecom/ProductPage');
 });
 
+Route::get('/filterProduct', function () {
+    return Inertia::render('Ecom/ProductFilterPage');
+});
+
 Route::get(
     '/dashboard',
     [OverviewController::class, "index"]

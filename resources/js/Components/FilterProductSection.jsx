@@ -1,14 +1,13 @@
-import React from "react";
 import Product from "./Product";
 
-const TreadingProduct = () => {
+const FilterProductSection = () => {
     return (
-        <div class="pt-16 ">
-            <h2 class="text-2xl font-bold tracking-tight  mb-6">
-                Treading Product
-            </h2>
-
+        <div class="p-5 ">
             <div className="grid md:grid-cols-4 grid-cols-2  lg:gap-4 gap-2">
+                <Product />
+                <Product />
+                <Product />
+                <Product />
                 <Product />
                 <Product />
                 <Product />
@@ -18,4 +17,4 @@ const TreadingProduct = () => {
     );
 };
 
-export default TreadingProduct;
+export default FilterProductSection;
