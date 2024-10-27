@@ -1,8 +1,10 @@
 import Description from "@/Components/Description";
 import Reviews from "@/Components/Reviews";
+import { addProduct } from "@/features/cartProductSlice";
 import EcommerceLayout from "@/Layouts/EcommerceLayout";
 import { usePage } from "@inertiajs/react";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 
 const ProductPage = () => {
     const { props } = usePage();
@@ -10,6 +12,12 @@ const ProductPage = () => {
     const [carosalImage, setCarosalImage] = useState(
         "https://plus.unsplash.com/premium_photo-1727942416727-9f16462ef11b?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     );
+    const dispatch = useDispatch();
+
+    const handleAddProduct = (product) => {
+        console.log(product);
+        dispatch(addProduct(product));
+    };
 
     return (
         <section className="max-w-[1320px] lg:w-[80%] w-[95%] mx-auto py-12 sm:py-16">
@@ -285,13 +293,16 @@ const ProductPage = () => {
 
                         <div className="mt-10 flex flex-col items-center justify-between space-y-4 border-t border-b py-4 sm:flex-row sm:space-y-0">
                             <div className="flex items-end">
-                                <h1 className="text-3xl font-bold">{props.product.price}</h1>
+                                <h1 className="text-3xl font-bold">
+                                    {props.product.price}
+                                </h1>
                                 <span className="text-base">/month</span>
                             </div>
 
                             <button
                                 type="button"
                                 className="inline-flex items-center justify-center rounded-md border-2 border-transparent bg-gray-900 bg-none px-12 py-3 text-center text-base font-bold text-white transition-all duration-200 ease-in-out focus:shadow hover:bg-gray-800"
+                                onClick={() => handleAddProduct(props.product)}
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"

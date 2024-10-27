@@ -11,7 +11,7 @@ const FeatureProduct = () => {
 
             <div className="grid md:grid-cols-4 grid-cols-2  lg:gap-4 gap-2">
                 {props.featuredProduct.map(product => (
-                  <Product productDetails={product}/>
+                  <Product key={product.id} productDetails={product}/>
                 ))}
             </div>
         </div>

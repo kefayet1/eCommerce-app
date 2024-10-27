@@ -15,30 +15,30 @@ import FeatureProduct from "@/Components/ecommerce/FeatureProduct";
 import TreadingProduct from "@/Components/TreadingProduct";
 
 const Home = () => {
-    const [shadowColor, setShadowColor] = useState({
-        color: "pink",
-        count: 0,
-    });
+    // const [shadowColor, setShadowColor] = useState({
+    //     color: "pink",
+    //     count: 0,
+    // });
     const MenuRef = useRef(null);
     const dispatch = useDispatch();
 
     const mobileMenu = useSelector((state) => state.mobileMenu);
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setShadowColor((prev) => {
-                if (prev.count === 0) {
-                    return { color: "orange", count: 1 };
-                } else if (prev.count === 1) {
-                    return { color: "blue", count: 2 };
-                } else {
-                    return { color: "pink", count: 0 };
-                }
-            });
-        }, 3000);
+    // useEffect(() => {
+    //     const interval = setInterval(() => {
+    //         setShadowColor((prev) => {
+    //             if (prev.count === 0) {
+    //                 return { color: "orange", count: 1 };
+    //             } else if (prev.count === 1) {
+    //                 return { color: "blue", count: 2 };
+    //             } else {
+    //                 return { color: "pink", count: 0 };
+    //             }
+    //         });
+    //     }, 3000);
 
-        return () => clearInterval(interval); // cleanup interval on component unmount
-    }, []);
+    //     return () => clearInterval(interval); // cleanup interval on component unmount
+    // }, []);
 
     return (
         <div className="max-w-[1320px] lg:w-[80%] w-[95%] mx-auto mb-20">
@@ -136,7 +136,7 @@ const Home = () => {
                     </div>
                 </div>
                 <div
-                    className={`slider lg:w-9/12 lg:ml-5  w-full p-3 shadow-${shadowColor.color}-300 shadow-lg border-1 border-black`}
+                    className={`slider lg:w-9/12 lg:ml-5  w-full p-3 shadow-pink-300 shadow-lg border-1 border-black`}
                 >
                     <Swiper
                         pagination={true}

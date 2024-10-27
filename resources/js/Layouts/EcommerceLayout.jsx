@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "@inertiajs/react";
 
 const EcommerceLayout = ({ children }) => {
+    const cartProduct = useSelector((state) => state.cartProduct);
     const dispatch = useDispatch();
     return (
         <>
@@ -40,12 +41,18 @@ const EcommerceLayout = ({ children }) => {
                     </div>
                     <div className="right flex items-center gap-4">
                         <div className="hidden md:block">
-                            <button className="px-6 py-2  text-black text-sm rounded-md font-semibold  ">
+                            <Link
+                                href="/login"
+                                className="px-6 py-2  text-black text-sm rounded-md font-semibold  "
+                            >
                                 Login
-                            </button>
-                            <button className="px-6 py-2  bg-black text-white text-sm rounded-md font-semibold hover:bg-black/[0.8] hover:shadow-lg">
+                            </Link>
+                            <Link
+                                href="/register "
+                                className="px-6 py-2  bg-black text-white text-sm rounded-md font-semibold hover:bg-black/[0.8] hover:shadow-lg"
+                            >
                                 Register
-                            </button>
+                            </Link>
                         </div>
                         <div className="md:hidden sm:block">
                             <RxHamburgerMenu
@@ -54,9 +61,11 @@ const EcommerceLayout = ({ children }) => {
                             />
                         </div>
                         <div className="">
-                            <Badge badgeContent={4} color="primary">
-                                <MdOutlineShoppingCart size="25" />
-                            </Badge>
+                            <Link href="/cart">
+                                <Badge badgeContent={cartProduct.length || 0} color="primary">
+                                    <MdOutlineShoppingCart size="25" />
+                                </Badge>
+                            </Link>
                         </div>
                     </div>
                 </nav>
