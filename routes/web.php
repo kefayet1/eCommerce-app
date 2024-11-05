@@ -1,9 +1,12 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OverviewController;
+use App\Http\Controllers\PaypalController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductEcomController;
 use App\Http\Controllers\ProfileController;
@@ -64,7 +67,22 @@ Route::middleware('auth')->group(function () {
     Route::get("/customer", [CustomerController::class, "index"]);
     Route::post("/createCustomers", [CustomerController::class, "createCustomers"]);
     Route::post("/deleteCustomer", [CustomerController::class, "deleteCustomers"]);
+
+    //Ecommerce
+    //checkout
+    Route::get("/checkout", [CheckoutController::class, "index"]);
+
+    //Order
+    Route::post("/createOrder", [OrderController::class, "OrderCreate"]);
+
+    //Payment success
+    Route::get("/OrderSuccess/{transactionId}/{orderId}", [OrderController::class, "paypalOrderSuccess"])->name('paypalSuccess');
+    Route::get("/StripeSuccess/{transactionId}/{orderId}", [OrderController::class, "stripeOrderSuccess"])->name("stripeSuccess");
+    Route::post("/sslCommerzSuccess", [OrderController::class, "sslCommerzOrderSuccess"])->name("sslCommerzSuccess");
 });
+
+
+
 
 
 
