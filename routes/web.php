@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\FilterProductController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OverviewController;
@@ -19,9 +20,7 @@ Route::get('/', [ProductEcomController::class, "index"]);
 
 Route::get('/product/{product_id}', [ProductEcomController::class, "getSingleProduct"]);
 
-Route::get('/filterProduct', function () {
-    return Inertia::render('Ecom/ProductFilterPage');
-});
+Route::get('/filterProduct', [FilterProductController::class, "index"]);
 
 Route::get('/cart', function () {
     return Inertia::render('Ecom/Cart');

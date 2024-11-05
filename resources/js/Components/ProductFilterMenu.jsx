@@ -1,10 +1,14 @@
+import { usePage } from "@inertiajs/react";
 import React from "react";
 import { useState } from "react";
 import { MdOutlineCancel } from "react-icons/md";
+import FilterCategoriesInput from "./FilterCategoriesInput";
 
 const ProductFilterMenu = ({ openFilterMenu, setOpenFilterMenu, myClass }) => {
     // const [openFilterMenu, setOpenFilterMenu] = useState(true);
     // console.log(openFilterMenu);
+    const { props } = usePage();
+    console.log(props.categories)
     return (
         <form
             action="#"
@@ -58,151 +62,12 @@ const ProductFilterMenu = ({ openFilterMenu, setOpenFilterMenu, myClass }) => {
                             </label>
                         </div>
 
-                        <div className="flex items-center">
-                            <input
-                                id="desktop"
-                                type="checkbox"
-                                value=""
-                                checked
-                                className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 focus:ring-2 "
-                            />
+                        {
+                            props.categories?.map(category => (
+                                <FilterCategoriesInput key={category.id} category={category}/>
+                            ))
+                        }
 
-                            <label
-                                for="dektop"
-                                className="ml-2 text-sm font-medium text-gray-900"
-                            >
-                                Desktop PC
-                            </label>
-                        </div>
-
-                        <div className="flex items-center">
-                            <input
-                                id="gaming"
-                                type="checkbox"
-                                value=""
-                                className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-50 focus:ring-2 "
-                            />
-
-                            <label
-                                for="gaming"
-                                className="ml-2 text-sm font-medium text-gray-900"
-                            >
-                                Gaming
-                            </label>
-                        </div>
-
-                        <div className="flex items-center">
-                            <input
-                                id="monitors"
-                                type="checkbox"
-                                value=""
-                                className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 focus:ring-2 "
-                            />
-
-                            <label
-                                for="monitors"
-                                className="ml-2 text-sm font-medium text-gray-900"
-                            >
-                                Monitors
-                            </label>
-                        </div>
-
-                        <div className="flex items-center">
-                            <input
-                                id="laptops"
-                                type="checkbox"
-                                value=""
-                                className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 focus:ring-2 "
-                            />
-
-                            <label
-                                for="laptops"
-                                className="ml-2 text-sm font-medium text-gray-900 "
-                            >
-                                Laptops
-                            </label>
-                        </div>
-
-                        <div className="flex items-center">
-                            <input
-                                id="console"
-                                type="checkbox"
-                                value=""
-                                checked
-                                className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 focus:ring-2 "
-                            />
-
-                            <label
-                                for="console"
-                                className="ml-2 text-sm font-medium text-gray-900 "
-                            >
-                                Console
-                            </label>
-                        </div>
-
-                        <div className="flex items-center">
-                            <input
-                                id="tablet"
-                                type="checkbox"
-                                value=""
-                                className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 focus:ring-2"
-                            />
-
-                            <label
-                                for="tablet"
-                                className="ml-2 text-sm font-medium text-gray-900"
-                            >
-                                Tablets
-                            </label>
-                        </div>
-
-                        <div className="flex items-center">
-                            <input
-                                id="foto"
-                                type="checkbox"
-                                value=""
-                                className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 focus:ring-2 "
-                            />
-
-                            <label
-                                for="foto"
-                                className="ml-2 text-sm font-medium text-gray-900 "
-                            >
-                                Foto
-                            </label>
-                        </div>
-
-                        <div className="flex items-center">
-                            <input
-                                id="fashion"
-                                type="checkbox"
-                                value=""
-                                className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 focus:ring-2 "
-                            />
-
-                            <label
-                                for="fashion"
-                                className="ml-2 text-sm font-medium text-gray-900"
-                            >
-                                Fashion
-                            </label>
-                        </div>
-
-                        <div className="flex items-center">
-                            <input
-                                id="books"
-                                type="checkbox"
-                                value=""
-                                className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 focus:ring-2 "
-                            />
-
-                            <label
-                                for="books"
-                                className="ml-2 text-sm font-medium text-gray-900"
-                            >
-                                Books
-                            </label>
-                        </div>
 
                         <a
                             href="#"
