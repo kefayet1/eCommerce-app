@@ -3,12 +3,40 @@ import React from "react";
 import { useState } from "react";
 import { MdOutlineCancel } from "react-icons/md";
 import FilterCategoriesInput from "./FilterCategoriesInput";
-
-const ProductFilterMenu = ({ openFilterMenu, setOpenFilterMenu, myClass }) => {
+import { Box, Slider, Typography } from "@mui/material";
+import debounce from "debounce";
+import { useRef } from "react";
+function valuetext(value) {
+    return `${(value, "ldsjl")}°C`;
+}
+const ProductFilterMenu = ({
+    openFilterMenu,
+    setOpenFilterMenu,
+    myClass,
+    handleProductPagination,
+}) => {
     // const [openFilterMenu, setOpenFilterMenu] = useState(true);
     // console.log(openFilterMenu);
     const { props } = usePage();
-    console.log(props.categories)
+
+    const [value, setValue] = React.useState([
+        props.heistLowProdPrice.lowest_price,
+        props.heistLowProdPrice.highest_price,
+    ]);
+
+    const callRange = (newValue) =>{
+        handleProductPagination(0, props.categoriesParam, newValue);
+    }
+
+    // Create a debounced version of hello that can pass newValue
+    const debouncedHello = useRef(debounce((newValue) => callRange(newValue), 1000));
+
+    const handleChange = (event, newValue) => {
+        console.log("hello in side", newValue);
+        setValue(newValue);
+        debouncedHello.current(newValue);
+    };
+
     return (
         <form
             action="#"
@@ -62,12 +90,15 @@ const ProductFilterMenu = ({ openFilterMenu, setOpenFilterMenu, myClass }) => {
                             </label>
                         </div>
 
-                        {
-                            props.categories?.map(category => (
-                                <FilterCategoriesInput key={category.id} category={category}/>
-                            ))
-                        }
-
+                        {props.categories?.map((category) => (
+                            <FilterCategoriesInput
+                                key={category.id}
+                                category={category}
+                                handleProductPagination={
+                                    handleProductPagination
+                                }
+                            />
+                        ))}
 
                         <a
                             href="#"
@@ -82,45 +113,39 @@ const ProductFilterMenu = ({ openFilterMenu, setOpenFilterMenu, myClass }) => {
                         <h6 className="text-base font-medium text-black ">
                             Prices
                         </h6>
-                        <div className="flex items-center justify-between col-span-2 space-x-3">
+                        <div className=" col-span-2 space-x-3">
                             <div className="w-full">
-                                <label
-                                    for="min-experience-input"
-                                    className="block mb-2 text-sm font-medium text-gray-900 "
+                                <div
+                                    style={{
+                                        margin: "0 auto",
+                                        textAlign: "center",
+                                    }}
                                 >
-                                    From
-                                </label>
-
-                                <input
-                                    type="number"
-                                    id="price-from"
-                                    value="300"
-                                    min="1"
-                                    max="10000"
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
-                                    placeholder=""
-                                    required
-                                />
+                                    <Typography variant="h6" gutterBottom>
+                                        Select Price Range
+                                    </Typography>
+                                    <Slider
+                                        value={value}
+                                        onChange={handleChange}
+                                        valueLabelDisplay="auto"
+                                        min={110}
+                                        max={9900}
+                                        step={10}
+                                    />
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            justifyContent: "space-between",
+                                        }}
+                                    >
+                                        
+                                    </div>
+                                </div>
                             </div>
 
-                            <div className="w-full">
-                                <label
-                                    for="price-to"
-                                    className="block mb-2 text-sm font-medium text-gray-900"
-                                >
-                                    To
-                                </label>
-
-                                <input
-                                    type="number"
-                                    id="max-experience-input"
-                                    value="3500"
-                                    min="1"
-                                    max="10000"
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 "
-                                    placeholder=""
-                                    required
-                                />
+                            <div className="w-full flex justify-between">
+                                <div className="h3">{value[0]}</div>
+                                <div className="h3">{value[1]}</div>
                             </div>
                         </div>
                     </div>

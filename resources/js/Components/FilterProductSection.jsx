@@ -4,15 +4,10 @@ import { Pagination, Stack } from "@mui/material";
 import { useState } from "react";
 
 
-const FilterProductSection = () => {
+const FilterProductSection = ({handleProductPagination}) => {
     const { props } = usePage();
 
-    const handleProductPagination = (e,page) => {
-        // e.preventDefault();
-        router.get(`filterProduct?page=${page}`);
-    };
-
-    console.log(props);
+    console.log(props.heistLowProdPrice);
     return (
         <div class="p-5 ">
             <div className="grid md:grid-cols-4 grid-cols-2  lg:gap-4 gap-2">
@@ -29,7 +24,7 @@ const FilterProductSection = () => {
                         variant="outlined"
                         color="primary"
                         page={props.products.current_page}
-                        onChange={(e, page) => handleProductPagination(e,page)}
+                        onChange={(e, page) => handleProductPagination(page, props.categoriesParam && props.categoriesParam)}
                     />
                 </Stack>
             </div>
