@@ -18,24 +18,36 @@ const ProductFilterMenu = ({
     // const [openFilterMenu, setOpenFilterMenu] = useState(true);
     // console.log(openFilterMenu);
     const { props } = usePage();
+    console.log(props);
+    const [highestPrice, setHighestPrice] = useState(
+        props?.heistLowProdPrice[0]
+    );
 
-    const [value, setValue] = React.useState([
-        props.heistLowProdPrice.lowest_price,
-        props.heistLowProdPrice.highest_price,
-    ]);
+    const [lowestPrice, setLowestPrice] = useState(
+        props?.heistLowProdPrice?.[1]
+    );
 
-    const callRange = (newValue) =>{
+    const callRange = (newValue) => {
         handleProductPagination(0, props.categoriesParam, newValue);
-    }
+    };
 
     // Create a debounced version of hello that can pass newValue
-    const debouncedHello = useRef(debounce((newValue) => callRange(newValue), 1000));
+    const debouncedHello = useRef(
+        debounce((newValue) => callRange(newValue), 1000)
+    );
 
-    const handleChange = (event, newValue) => {
-        console.log("hello in side", newValue);
-        setValue(newValue);
-        debouncedHello.current(newValue);
+    const handleLowChange = (lowVal) => {
+        setLowestPrice(lowVal);
+        debouncedHello.current([lowVal, highestPrice]);
     };
+
+    const handleHigChange = (higVal) => {
+
+        console.log(higVal);
+        setHighestPrice(higVal);
+        debouncedHello.current([lowestPrice, higVal]);
+    };
+    console.log(handleHigChange);
 
     return (
         <form
@@ -114,7 +126,7 @@ const ProductFilterMenu = ({
                             Prices
                         </h6>
                         <div className=" col-span-2 space-x-3">
-                            <div className="w-full">
+                            {/* <div className="w-full">
                                 <div
                                     style={{
                                         margin: "0 auto",
@@ -137,15 +149,58 @@ const ProductFilterMenu = ({
                                             display: "flex",
                                             justifyContent: "space-between",
                                         }}
-                                    >
-                                        
+                                    ></div>
+                                </div>
+                            </div> */}
+
+                            <div className="space-y-2">
+                                <div className="border-t border-gray-200 p-4">
+                                    <div className="flex justify-between gap-4">
+                                        <label
+                                            htmlFor="FilterPriceFrom"
+                                            className="flex items-center gap-2"
+                                        >
+                                            <span className="text-sm text-gray-600">
+                                                $
+                                            </span>
+
+                                            <input
+                                                type="number"
+                                                id="FilterPriceFrom"
+                                                placeholder="From"
+                                                className="w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                                                value={lowestPrice}
+                                                onChange={(e) =>
+                                                    handleLowChange(
+                                                        e.target.value
+                                                    )
+                                                }
+                                            />
+                                        </label>
+
+                                        <label
+                                            htmlFor="FilterPriceTo"
+                                            className="flex items-center gap-2"
+                                        >
+                                            <span className="text-sm text-gray-600">
+                                                $
+                                            </span>
+
+                                            <input
+                                                type="number"
+                                                id="FilterPriceTo"
+                                                placeholder="To"
+                                                className="w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                                                value={highestPrice}
+                                                onChange={(e) =>
+                                                    handleHigChange(
+                                                        e.target.value
+                                                    )
+                                                }
+                                            />
+                                        </label>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div className="w-full flex justify-between">
-                                <div className="h3">{value[0]}</div>
-                                <div className="h3">{value[1]}</div>
                             </div>
                         </div>
                     </div>

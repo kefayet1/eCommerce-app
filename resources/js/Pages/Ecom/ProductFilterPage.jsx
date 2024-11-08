@@ -10,11 +10,13 @@ const ProductFilterPage = () => {
     const handleProductPagination = (page, categories, newVal) => {
         console.log(newVal, "hello world");
         // e.preventDefault();
-        router.get(`filterProduct?page=${page}`, {
+        router.get(route("filterProduct"), {
             categories: categories ,
             priceRange: newVal
         });
     };
+
+    console.log(route().params, "lksdlkfj");
     return (
         <div className="max-w-[1320px]  lg:w-[80%] w-full mx-auto flex">
             <div className="leftSide">

@@ -20,7 +20,7 @@ Route::get('/', [ProductEcomController::class, "index"]);
 
 Route::get('/product/{product_id}', [ProductEcomController::class, "getSingleProduct"]);
 
-Route::get('/filterProduct', [FilterProductController::class, "index"]);
+Route::get('/filterProduct', [FilterProductController::class, "index"])->name("filterProduct");
 
 Route::get('/cart', function () {
     return Inertia::render('Ecom/Cart');
