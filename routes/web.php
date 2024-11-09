@@ -34,7 +34,7 @@ Route::get('/cart', function () {
 Route::get(
     '/dashboard',
     [OverviewController::class, "index"]
-)->middleware(['auth', 'verified', 'role:admin'])->name('dashboard');
+)->middleware(['auth', 'verified','role:admin'])->name('dashboard');
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

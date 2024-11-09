@@ -17,11 +17,9 @@ class SalePageController extends Controller
     public function index(Request $request)
     {
         $product = DB::table("products")
-            ->where('products.user_id', '=', Auth::user()->id)
             ->select("products.name as productName", "products.price", "products.unit", "products.created_at", "products.id")
             ->paginate(10, ['*'], 'customers_page');
         $customer = DB::table("customers")
-            ->where("user_id", "=", Auth::user()->id)
             ->select('customers.id', 'customers.name', 'customers.email')
             ->paginate(10, ['*'], 'products_page');
 

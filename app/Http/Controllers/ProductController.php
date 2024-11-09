@@ -18,7 +18,6 @@ class ProductController extends Controller
         // $products = Product::where("user_id", "=", Auth::user()->id)->get();
         $products = DB::table("products")
             ->leftJoin("categories", "products.category_id", "=", "categories.id")
-            ->where('products.user_id', '=', Auth::user()->id)
             ->select("products.name as productName", "products.price", "products.unit", "products.created_at", "products.img_url", "categories.name as categoryName", "products.id", "categories.id as categoryId")
             ->paginate(10);
 
@@ -52,7 +51,7 @@ class ProductController extends Controller
 
     public function destroy(Request $request)
     {
-        Product::where("user_id", "=", Auth::user()->id)->where("id", "=", $request->input("id"))->delete();
+        Product::where("id", "=", $request->input("id"))->delete();
     }
 
     public function editProduct(Request $request)
@@ -78,12 +77,12 @@ class ProductController extends Controller
             }
         }
 
-        Product::where("user_id", "=", Auth::user()->id)->where("id", "=", $request->input("id"))->update([
+        Product::where("id", "=", $request->input("id"))->update([
             'name' => $request->input('name'),
             'price' => $request->input('price'),
             'unit' => $request->input(key: 'unit'),
             'category_id' => $request->input('categoryId'),
-            'img_url' => $img_url ? $img_url : $request->input("oldImage"),
+            'img_url' => $img_url ?: $request->input("oldImage"),
         ]);
-    }w
+    }
 }

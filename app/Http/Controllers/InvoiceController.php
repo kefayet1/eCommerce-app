@@ -18,7 +18,6 @@ class InvoiceController extends Controller
     {
         $invoices = DB::table("invoices")
             ->leftJoin("customers", "invoices.customer_id", "=", "customers.id")
-            ->where("invoices.user_id", "=", Auth::user()->id)
             ->select("invoices.id", "invoices.total", "invoices.discount", "invoices.vat", "invoices.payable", "customers.name", "customers.mobile")
             ->paginate(10);
 

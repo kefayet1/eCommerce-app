@@ -13,7 +13,7 @@ class CustomerController extends Controller
 
     public function index()
     {
-        $customers = Customer::where("user_id", "=", Auth::user()->id)->paginate(10);
+        $customers = Customer::paginate(10);
         return Inertia::render("Dashboard/Customers", ['customers' => $customers]);
     }
 
@@ -30,7 +30,7 @@ class CustomerController extends Controller
     public function deleteCustomers(Request $request)
     {
         $customers = Customer::where("id", "=", $request->input("id"))
-            ->where("user_id", '=', Auth::user()->id)->delete();
+            ->delete();
         
     }
 }

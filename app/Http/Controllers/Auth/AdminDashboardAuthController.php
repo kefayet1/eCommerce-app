@@ -30,7 +30,8 @@ class AdminDashboardAuthController extends Controller
 
         $request->session()->regenerate();
         $user = Auth::user();
-
+        
+        // dd($user->hasRole("admin"));
         if (!$user->hasRole("admin")) {
             Auth::logout();
             return redirect()->route('adminLogin')->withErrors([

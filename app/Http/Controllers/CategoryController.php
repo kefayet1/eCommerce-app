@@ -14,7 +14,7 @@ class CategoryController extends Controller
 
     public function index(Request $request)
     {
-        $categories = Category::where('user_id', "=", Auth::user()->id)->get();
+        $categories = Category::get();
         // dd($categories);
         return Inertia::render("Dashboard/Categories", ['categories' => $categories]);
     }
@@ -29,12 +29,11 @@ class CategoryController extends Controller
 
     public function destroy(Request $request)
     {
-        Category::where('user_id', "=", Auth::user()->id)
-            ->where('id', '=', $request->input('id'))->delete();
+        Category::where('id', '=', $request->input('id'))->delete();
     }
 
     public function editCategory(Request $request)
     {
-        Category::where('user_id', "=", Auth::user()->id)->where('id', '=', $request->input('id'))->update(['name' => $request->input('name')]);
+        Category::where('id', '=', $request->input('id'))->update(['name' => $request->input('name')]);
     }
 }
