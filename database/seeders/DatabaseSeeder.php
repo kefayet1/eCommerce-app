@@ -2,12 +2,13 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
+use App\Models\Product;
 use App\Models\Category;
 use App\Models\Customer;
-use App\Models\Product;
-use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,16 +18,15 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         User::factory(20)->create();
-        User::factory()->create([
+        $admin = User::factory()->create([
             'name' => 'kefayet',
-            'email' => 'kefayeturrahman492@gmail.com',
+            'email' => 'kefayet52@gmail.com',
             'password' => '12345678'
         ]);
 
-        Category::create([
-            'name' => 'clothes',
-            'user_id' => rand(1,20)
-        ]);
+        $role = Role::create(['name' => 'admin']);
+        $admin->assignRole('admin');
+
         Category::create([
             'name' => 'watches',
             'user_id' => rand(1,20)
