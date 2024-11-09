@@ -16,6 +16,8 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+
+// Unauthenticated route
 Route::get('/', [ProductEcomController::class, "index"])->name('home');
 
 Route::get('/product/{product_id}', [ProductEcomController::class, "getSingleProduct"]);
@@ -26,6 +28,9 @@ Route::get('/cart', function () {
     return Inertia::render('Ecom/Cart');
 });
 
+
+
+// Dashboard
 Route::get(
     '/dashboard',
     [OverviewController::class, "index"]
@@ -70,8 +75,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 });
 
+
+//Ecommerce
 Route::middleware('auth')->group(function () {
-    //Ecommerce
     //checkout
     Route::get("/checkout", [CheckoutController::class, "index"]);
 
