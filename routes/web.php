@@ -12,6 +12,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductEcomController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SalePageController;
+use App\Http\Controllers\SubCategoryController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -34,7 +35,7 @@ Route::get('/cart', function () {
 Route::get(
     '/dashboard',
     [OverviewController::class, "index"]
-)->middleware(['auth', 'verified','role:admin'])->name('dashboard');
+)->middleware(['auth', 'verified', 'role:admin'])->name('dashboard');
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -50,6 +51,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post("/createCategory", [CategoryController::class, 'createCategory']);
     Route::post("/deleteCategory", [CategoryController::class, 'destroy']);
     Route::post("/editCategory", [CategoryController::class, 'editCategory']);
+
+    //sub categories
+    Route::get("/subCategory", [SubCategoryController::class, 'index'])->name('subCategory.index');
 
     //product
     Route::get('/products', [ProductController::class, 'index']);

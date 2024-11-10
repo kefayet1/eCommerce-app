@@ -2,9 +2,11 @@ import React from "react";
 import NavLink from "../NavLink";
 import { PiChartPie } from "react-icons/pi";
 import { BsFillPeopleFill } from "react-icons/bs";
-import { FaAmericanSignLanguageInterpreting, FaFileInvoice } from "react-icons/fa";
-import { TbBrandSafari } from "react-icons/tb";
-
+import {
+    FaAmericanSignLanguageInterpreting,
+    FaFileInvoice,
+} from "react-icons/fa";
+import { TbCategoryPlus } from "react-icons/tb";
 
 import {
     IoBagHandleOutline,
@@ -28,6 +30,13 @@ const LeftSideBar = () => {
                 <NavDashLink name={"Category"} url={url} to={"/categories"}>
                     <MdOutlineCategory size={"20px"} />
                 </NavDashLink>
+                <NavDashLink
+                    name={"Sub-Category"}
+                    url={url}
+                    to={"/subCategory"}
+                >
+                    <TbCategoryPlus size={"20px"} />
+                </NavDashLink>
                 <NavDashLink name={"Product"} url={url} to={"/products"}>
                     <FaAmericanSignLanguageInterpreting size={"20px"} />
                 </NavDashLink>
@@ -40,9 +49,6 @@ const LeftSideBar = () => {
                 <NavDashLink name={"Customers"} url={url} to={"/customer"}>
                     <IoPeopleOutline size={"20px"} />
                 </NavDashLink>
-                {/* <NavDashLink name={"Customers"} url={url} to={"/customer"}>
-                    <TbBrandSafari/>
-                </NavDashLink> */}
             </div>
         </div>
     );
