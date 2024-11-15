@@ -6,6 +6,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\FilterProductController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderDetailsController;
 use App\Http\Controllers\OverviewController;
 use App\Http\Controllers\PaypalController;
 use App\Http\Controllers\ProductController;
@@ -79,7 +80,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post("/createCustomers", [CustomerController::class, "createCustomers"]);
     Route::post("/deleteCustomer", [CustomerController::class, "deleteCustomers"]);
 
-
+    //Order
+    Route::get("/order", [OrderController::class, "index"]);
+    Route::get("/orderDetails/{id}", [OrderDetailsController::class, "index"]);
+    Route::post("/orderDelete", [OrderDetailsController::class, "orderDelete"]);
 });
 
 

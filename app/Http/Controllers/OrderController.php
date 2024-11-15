@@ -2,20 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Helper\Paypal;
 use Inertia\Inertia;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Http\Helper\Paypal;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Http\Helper\SSLCommerz;
 use App\Http\Helper\StripeHelper;
-use App\Models\Transaction;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 
 class OrderController extends Controller
 {
     //
+
+    public function index()
+    {
+        $order = DB::table("orders")
+            ->join("transactions", "orders.id", "=", "transactions.order_id")
+            ->leftJoin("users", "orders.user_id", "=", "users.id")
+            ->select("users.name", "users.email", "orders.delivery_status", "orders.id", "transactions.total", "transactions.payment_status", "transactions.vat", "transactions.payment_method")
+            ->paginate(10);
+        return Inertia::render("Dashboard/Orders", ['orders' => $order]);
+    }
     public function OrderCreate(Request $request)
     {
         // dd("hello");

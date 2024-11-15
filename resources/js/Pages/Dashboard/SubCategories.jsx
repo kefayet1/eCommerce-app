@@ -27,7 +27,7 @@ const SubCategories = () => {
             setData({
                 name: "",
                 parent_id: "",
-                id: 0
+                id: 0,
             });
         }
     };
@@ -56,8 +56,8 @@ const SubCategories = () => {
         setOpenEditForm(true);
         setEditFormData(data);
         setData({
-            name : data.name,
-            id: data.id
+            name: data.name,
+            id: data.id,
         });
     };
 
@@ -113,10 +113,14 @@ const SubCategories = () => {
                                             onChange={(index, value) => {
                                                 setData("parent_id", value.id);
                                             }}
-                                            defaultValue={{
-                                                label: editFormData.parent_name,
-                                                id: editFormData.id,
-                                            }}
+                                            defaultValue={
+                                                openEditForm
+                                                    ? {
+                                                          label: editFormData.parent_name,
+                                                          id: editFormData.id,
+                                                      }
+                                                    : null
+                                            }
                                             renderInput={(params) => (
                                                 <TextField
                                                     {...params}
