@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CustomerController;
@@ -84,6 +85,15 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get("/order", [OrderController::class, "index"]);
     Route::get("/orderDetails/{id}", [OrderDetailsController::class, "index"]);
     Route::post("/orderDelete", [OrderDetailsController::class, "orderDelete"]);
+
+    //Brand
+    Route::get("/brand", [BrandController::class, "index"]);
+    Route::post("/createBrand", [BrandController::class, "createBrand"]);
+    Route::post("/editBrand", [BrandController::class, "editBrand"]);
+    Route::post("/deleteBrand", [BrandController::class, "deleteBrand"]);
+
+    // Manage Role
+    Route::get("/manageRole", [BrandController::class, "index"]);
 });
 
 
