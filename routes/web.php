@@ -6,6 +6,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\FilterProductController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\ManageRoleController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderDetailsController;
 use App\Http\Controllers\OverviewController;
@@ -93,7 +94,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post("/deleteBrand", [BrandController::class, "deleteBrand"]);
 
     // Manage Role
-    Route::get("/manageRole", [BrandController::class, "index"]);
+    Route::get("/manageRole", [ManageRoleController::class, "index"]);
+    Route::post("/changeUserRole", [ManageRoleController::class, "changeUserRole"]);
+    Route::post("/deleteUserRole", [ManageRoleController::class, "deleteUserRole"]);
 });
 
 

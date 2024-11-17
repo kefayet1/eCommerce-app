@@ -28,57 +28,59 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('12345678')
         ]);
 
-        
 
-        $role = Role::create(['name' => 'admin']); 
+
+        $role = Role::create(['name' => 'admin']);
+        $userRole = Role::create(['name' => 'user']);
+        $manager = Role::create(['name' => 'manager']);
         $admin->assignRole('admin');
 
         Category::create([
             'name' => 'watches',
-            'user_id' => rand(1,20)
+            'user_id' => rand(1, 20)
         ]);
         Category::create([
             'name' => 'food',
-            'user_id' => rand(1,20)
+            'user_id' => rand(1, 20)
         ]);
         Category::create([
             'name' => 'baby',
-            'user_id' => rand(1,20)
+            'user_id' => rand(1, 20)
         ]);
         Category::create([
             'name' => 'men',
-            'user_id' => rand(1,20)
+            'user_id' => rand(1, 20)
         ]);
 
         Category::create([
             'name' => 'electronics',
-            'user_id' => rand(1,20)
+            'user_id' => rand(1, 20)
         ]);
 
 
         Category::create([
             'name' => 'mobile',
-            'user_id' => rand(1,20)
+            'user_id' => rand(1, 20)
         ]);
 
         Category::create([
             'name' => 'books',
-            'user_id' => rand(1,20)
+            'user_id' => rand(1, 20)
         ]);
 
         Category::create([
             'name' => 'Health',
-            'user_id' => rand(1,20)
+            'user_id' => rand(1, 20)
         ]);
 
         Category::create([
             'name' => 'Beauty',
-            'user_id' => rand(1,20)
+            'user_id' => rand(1, 20)
         ]);
 
         Category::create([
             'name' => 'Bags',
-            'user_id' => rand(1,20)
+            'user_id' => rand(1, 20)
         ]);
 
         Product::factory(200)->create();
