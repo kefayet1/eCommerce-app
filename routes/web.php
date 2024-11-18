@@ -3,6 +3,7 @@
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\CustomAttributeController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\FilterProductController;
 use App\Http\Controllers\InvoiceController;
@@ -97,6 +98,13 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get("/manageRole", [ManageRoleController::class, "index"]);
     Route::post("/changeUserRole", [ManageRoleController::class, "changeUserRole"]);
     Route::post("/deleteUserRole", [ManageRoleController::class, "deleteUserRole"]);
+
+    // Custom attribute
+    Route::get("/customAttribute", [CustomAttributeController::class, "index"]);
+    Route::post("/createAttribute", [CustomAttributeController::class, "createAttribute"]);
+    Route::post("/editAttribute", [CustomAttributeController::class, "editAttribute"]);
+    Route::post("/deleteAttribute", [CustomAttributeController::class, "deleteAttribute"]);
+    Route::post("/toggleAttributeActive", [CustomAttributeController::class, "toggleAttributeActive"]);
 });
 
 

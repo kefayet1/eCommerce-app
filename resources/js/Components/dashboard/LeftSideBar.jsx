@@ -15,7 +15,7 @@ import {
     IoPeopleOutline,
     IoSettingsOutline,
 } from "react-icons/io5";
-import { MdManageAccounts, MdOutlineAccountCircle, MdOutlineCategory } from "react-icons/md";
+import { MdEditAttributes, MdManageAccounts, MdOutlineAccountCircle, MdOutlineCategory } from "react-icons/md";
 import { FaArrowRightToBracket, FaHandshakeSimple } from "react-icons/fa6";
 import { Link, usePage } from "@inertiajs/react";
 import NavDashLink from "./NavDashLink";
@@ -59,6 +59,9 @@ const LeftSideBar = () => {
                 </NavDashLink>
                 <NavDashLink name={"Manage Role"} url={url} to={"/manageRole"}>
                     <MdManageAccounts size={"20px"} />
+                </NavDashLink>
+                <NavDashLink name={"Custom Attributes"} url={url} to={"/customAttribute"}>
+                    <MdEditAttributes size={"20px"} />
                 </NavDashLink>
             </div>
         </div>

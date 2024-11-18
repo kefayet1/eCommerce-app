@@ -36,19 +36,19 @@ class DatabaseSeeder extends Seeder
         $admin->assignRole('admin');
 
         Category::create([
-            'name' => 'watches',
+            'name' => 'Electronics',
             'user_id' => rand(1, 20)
         ]);
         Category::create([
-            'name' => 'food',
+            'name' => 'Mobile',
             'user_id' => rand(1, 20)
         ]);
         Category::create([
-            'name' => 'baby',
+            'name' => 'Television',
             'user_id' => rand(1, 20)
         ]);
         Category::create([
-            'name' => 'men',
+            'name' => 'Bike',
             'user_id' => rand(1, 20)
         ]);
 
@@ -59,27 +59,27 @@ class DatabaseSeeder extends Seeder
 
 
         Category::create([
-            'name' => 'mobile',
+            'name' => "Man's Fashion",
             'user_id' => rand(1, 20)
         ]);
 
         Category::create([
-            'name' => 'books',
+            'name' => 'Home And Lifestyle',
             'user_id' => rand(1, 20)
         ]);
 
         Category::create([
-            'name' => 'Health',
+            'name' => 'Babies And Toys',
             'user_id' => rand(1, 20)
         ]);
 
         Category::create([
-            'name' => 'Beauty',
+            'name' => 'Electronics Accessories',
             'user_id' => rand(1, 20)
         ]);
 
         Category::create([
-            'name' => 'Bags',
+            'name' => 'Vehicle & Accessories',
             'user_id' => rand(1, 20)
         ]);
 
