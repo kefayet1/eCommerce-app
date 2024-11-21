@@ -77,7 +77,7 @@ const EcommerceLayout = ({ children }) => {
                                 </Link>
                             </div>
                         )}
-                        <div className="md:hidden sm:block">
+                        <div className="lg:hidden md:block">
                             <RxHamburgerMenu
                                 size={"24"}
                                 onClick={() => dispatch(hideMenu())}
@@ -154,13 +154,12 @@ const EcommerceLayout = ({ children }) => {
                                         vertical: "bottom",
                                     }}
                                 >
-                                    <MenuItem onClick={handleClose}>
-                                        <Avatar /> Profile
-                                    </MenuItem>
-                                    <MenuItem onClick={handleClose}>
-                                        <Avatar /> My account
-                                    </MenuItem>
-                                    <Divider />
+                                    <Link href="/myAccount">
+                                        <MenuItem onClick={handleClose}>
+                                            <Avatar /> My account
+                                        </MenuItem>
+                                    </Link>
+                                    {/* <Divider />
                                     <MenuItem onClick={handleClose}>
                                         <ListItemIcon>
                                             <BsPersonAdd size={23} />
@@ -172,7 +171,7 @@ const EcommerceLayout = ({ children }) => {
                                             <CiSettings size={23} />
                                         </ListItemIcon>
                                         Settings
-                                    </MenuItem>
+                                    </MenuItem> */}
 
                                     <span onClick={handleLogout}>
                                         <MenuItem onClick={handleClose}>

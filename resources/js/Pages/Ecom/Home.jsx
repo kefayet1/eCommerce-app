@@ -13,6 +13,19 @@ import { useRef } from "react";
 import PopularProduct from "@/Components/ecommerce/PopularProduct";
 import FeatureProduct from "@/Components/ecommerce/FeatureProduct";
 import TreadingProduct from "@/Components/TreadingProduct";
+import { usePage } from "@inertiajs/react";
+import HomeCategoryMenubar from "@/Components/HomeCategoryMenubar";
+import {
+    Box,
+    Divider,
+    Drawer,
+    List,
+    ListItem,
+    ListItemButton,
+    ListItemIcon,
+    ListItemText,
+} from "@mui/material";
+import HomeCategoryMobileMenu from "@/Components/HomeCategoryMobileMenu";
 
 const Home = () => {
     // const [shadowColor, setShadowColor] = useState({
@@ -21,8 +34,17 @@ const Home = () => {
     // });
     const MenuRef = useRef(null);
     const dispatch = useDispatch();
+    const { props } = usePage();
+    const [dropDownHover, setDropDownHover] = useState(null);
 
     const mobileMenu = useSelector((state) => state.mobileMenu);
+
+    const [open, setOpen] = useState(false);
+
+    const toggleDrawer = (newOpen) => () => {
+        // setOpen(newOpen);
+        dispatch(hideMenu());
+    };
 
     // useEffect(() => {
     //     const interval = setInterval(() => {
@@ -40,9 +62,40 @@ const Home = () => {
     //     return () => clearInterval(interval); // cleanup interval on component unmount
     // }, []);
 
+    // console.log(props.categories.length);
+    const handleHover = (e, index) => {
+        setDropDownHover(index);
+    };
+
+    const handleHoverLeave = () => {
+        setDropDownHover(null);
+    };
+
+    const DrawerList = (
+        <Box
+            sx={{
+                width: 250,
+                position: "absolute",
+                top: 0,
+                left: 0,
+                zIndex: 100,
+                background: "#fff",
+                height: "100%",
+            }}
+            role="presentation"
+            // onClick={toggleDrawer(false)}
+        >
+            {props.categoryTree.map((category) => (
+                <HomeCategoryMobileMenu
+                    index={category.id}
+                    category={category}
+                />
+            ))}
+        </Box>
+    );
     return (
         <div className="max-w-[1320px] lg:w-[80%] w-[95%] mx-auto mb-20">
-            <div
+            {/* <div
                 id="drawer-right-example"
                 class={`fixed top-0 right-${
                     mobileMenu ? 96 : 0
@@ -50,10 +103,7 @@ const Home = () => {
                 tabindex="-1"
                 aria-labelledby="drawer-right-label"
             >
-                <h5
-                    id="drawer-right-label"
-                    class="inline-flex items-center mb-4 text-base font-semibold  "
-                ></h5>
+
                 <button
                     type="button"
                     data-drawer-hide="drawer-right-example"
@@ -104,15 +154,61 @@ const Home = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
+
+            <Drawer open={mobileMenu} onClose={toggleDrawer()}>
+                {DrawerList}aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+            </Drawer>
+
             <div className="flex mt-4">
-                <div className="w-3/12 lg:block ml hidden">
-                    <div className="flex flex-col gap-2 rounded-md p-5 shadow-md">
-                        <div className="py-2 border-b pl-3 flex items-center justify-between">
-                            <h5 className="text-base">Fashion</h5>
-                            <MdOutlineKeyboardArrowRight />
-                        </div>
-                        <div className="py-2 border-b pl-3 flex items-center justify-between">
+                <div className="w-3/12 lg:block ml hidden z-20">
+                    <HomeCategoryMenubar categoryTree={props.categoryTree} />
+                    {/* <ul className="flex flex-col gap-2 rounded-md z-20 p-5 shadow-md relative">
+                        {props.categoryTree.map((category, index) => (
+                            <>
+                                <li
+                                    key={category.id}
+                                    className={`py-2 ${
+                                        index !==
+                                            props.categoryTree.length - 1 &&
+                                        "border-b"
+                                    } pl-3 flex items-center justify-between`}
+                                    onMouseEnter={(e) => handleHover(e, index)}
+                                    onMouseLeave={(e) => handleHoverLeave(e)}
+                                >
+                                    <h5 className="text-base">
+                                        {category.name}
+                                    </h5>
+                                    {category.childCategories.length !== 0 && (
+                                        <MdOutlineKeyboardArrowRight />
+                                    )}
+                                </li>
+                                {/* {category.childCategories.length !== 0 &&
+                                    dropDownHover === index && (
+                                        <ul
+                                            className="flex pl-3  left-60 flex-col absolute gap-2 z-20 rounded-md p-5 shadow-md"
+                                            onMouseEnter={() =>
+                                                handleParentHover(index)
+                                            }
+                                            onMouseLeave={handleHoverLeave}
+                                        >
+                                            {category.childCategories.map(
+                                                (childCategories) => (
+                                                    <li className="py-2 border-b pl-3 flex items-center justify-between">
+                                                        <h5 className="text-based">
+                                                            {
+                                                                childCategories.name
+                                                            }
+                                                        </h5>
+                                                        <MdOutlineKeyboardArrowRight />
+                                                    </li>
+                                                )
+                                            )}
+                                        </ul>
+                                    )} */}
+                    {/* </> */}
+                    {/* ))} */}
+                    {/* <div className="py-2 border-b pl-3 flex items-center justify-between">
                             <h5 className="text-based">Kitchen</h5>
                             <MdOutlineKeyboardArrowRight />
                         </div>
@@ -132,8 +228,8 @@ const Home = () => {
                         <div className="py-2  pl-3 flex items-center justify-between">
                             <h5 className="text-base">Jewelry</h5>
                             <MdOutlineKeyboardArrowRight />
-                        </div>
-                    </div>
+                        </div> */}
+                    {/* </ul> */}
                 </div>
                 <div
                     className={`slider lg:w-9/12 lg:ml-5  w-full p-3 shadow-pink-300 shadow-lg border-1 border-black`}
@@ -195,10 +291,13 @@ const Home = () => {
             <FeatureProduct />
 
             <div className="mt-7">
-                <img src="http://127.0.0.1:8000/themeImage/375800709_be88a25d-bfd4-4be1-b3b4-2757192af14c.jpg" alt="" />
+                <img
+                    src="http://127.0.0.1:8000/themeImage/375800709_be88a25d-bfd4-4be1-b3b4-2757192af14c.jpg"
+                    alt=""
+                />
             </div>
 
-            <TreadingProduct/>
+            <TreadingProduct />
         </div>
     );
 };

@@ -17,6 +17,7 @@ use App\Http\Controllers\ProductEcomController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SalePageController;
 use App\Http\Controllers\SubCategoryController;
+use App\Http\Controllers\UserDashboardController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -105,6 +106,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post("/editAttribute", [CustomAttributeController::class, "editAttribute"]);
     Route::post("/deleteAttribute", [CustomAttributeController::class, "deleteAttribute"]);
     Route::post("/toggleAttributeActive", [CustomAttributeController::class, "toggleAttributeActive"]);
+
+    // User Dashboard 
+    Route::get("/myAccount", [UserDashboardController::class, "index"]);
 });
 
 
