@@ -8,6 +8,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\FilterProductController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ManageRoleController;
+use App\Http\Controllers\MyOrderController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderDetailsController;
 use App\Http\Controllers\OverviewController;
@@ -28,7 +29,7 @@ Route::get('/', [ProductEcomController::class, "index"])->name('home');
 
 Route::get('/product/{product_id}', [ProductEcomController::class, "getSingleProduct"]);
 
-Route::get('/filterProduct', [FilterProductController::class, "index"])->name("filterProduct");
+Route::get('/filterProduct/{categoryName}', [FilterProductController::class, "index"])->name("filterProduct");
 
 Route::get('/cart', function () {
     return Inertia::render('Ecom/Cart');
@@ -109,6 +110,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     // User Dashboard 
     Route::get("/myAccount", [UserDashboardController::class, "index"]);
+
+    // myOrder
+    Route::get("/myOrder", [MyOrderController::class, "index"]);
+    Route::get("/userOrder/{id}", [MyOrderController::class, "userOrderDetail"]);
 });
 
 

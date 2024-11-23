@@ -1,4 +1,4 @@
-import { usePage } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 
 const HomeCategoryMenubar = ({ categoryTree }) => {
@@ -11,7 +11,7 @@ const HomeCategoryMenubar = ({ categoryTree }) => {
                     key={category.id}
                     className="py-2 border-b last:border-b-0 pl-3 flex items-center justify-between"
                 >
-                    <h5 className="text-base">{category.name}</h5>
+                    <Link href={category.parent_id && `/filterProduct/${category.name}`} className="text-base">{category.name}</Link>
                     {category.childCategories && category.childCategories.length > 0 && (
                         <>
                             <MdOutlineKeyboardArrowRight />

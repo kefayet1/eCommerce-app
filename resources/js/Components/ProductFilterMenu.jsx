@@ -1,4 +1,4 @@
-import { usePage } from "@inertiajs/react";
+import { Link, router, usePage } from "@inertiajs/react";
 import React from "react";
 import { useState } from "react";
 import { MdOutlineCancel } from "react-icons/md";
@@ -6,6 +6,8 @@ import FilterCategoriesInput from "./FilterCategoriesInput";
 import { Box, Slider, Typography } from "@mui/material";
 import debounce from "debounce";
 import { useRef } from "react";
+import { IoMdArrowDropright } from "react-icons/io";
+
 function valuetext(value) {
     return `${(value, "ldsjl")}°C`;
 }
@@ -17,37 +19,26 @@ const ProductFilterMenu = ({
 }) => {
     // const [openFilterMenu, setOpenFilterMenu] = useState(true);
     // console.log(openFilterMenu);
+    const params = new URLSearchParams(window.location.search);
+    const [priceRange, setPriceRange] = useState({
+        max: "",
+        min: "",
+    });
     const { props } = usePage();
-    console.log(props);
-    const [highestPrice, setHighestPrice] = useState(
-        props?.heistLowProdPrice[0]
-    );
+    const currentCategoryName = window.location.pathname.split("/")[2];
 
-    const [lowestPrice, setLowestPrice] = useState(
-        props?.heistLowProdPrice?.[1]
-    );
-
-    const callRange = (newValue) => {
-        handleProductPagination(0, props.categoriesParam, newValue);
+    const handlePriceRangeSubmit = () => {
+        router.get(
+            route("filterProduct", { categoryName: currentCategoryName }),{
+                max: priceRange.max,
+                min: priceRange.min
+            }
+        );
     };
 
-    // Create a debounced version of hello that can pass newValue
-    const debouncedHello = useRef(
-        debounce((newValue) => callRange(newValue), 1000)
-    );
-
-    const handleLowChange = (lowVal) => {
-        setLowestPrice(lowVal);
-        debouncedHello.current([lowVal, highestPrice]);
-    };
-
-    const handleHigChange = (higVal) => {
-
-        console.log(higVal);
-        setHighestPrice(higVal);
-        debouncedHello.current([lowestPrice, higVal]);
-    };
-    console.log(handleHigChange);
+    console.log(params.min, 'swrrwe');
+    
+    console.log(params.get('min'));
 
     return (
         <form
@@ -83,41 +74,33 @@ const ProductFilterMenu = ({
                     {/* <!-- Categories --> */}
                     <div className="space-y-2">
                         <h6 className="text-base font-medium text-black">
-                            Categories
+                            Sub Categories
                         </h6>
 
-                        <div className="flex items-center">
-                            <input
-                                id="tv"
-                                type="checkbox"
-                                value=""
-                                className="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 focus:ring-2 "
-                            />
-
-                            <label
-                                for="tv"
-                                className="ml-2 text-sm font-medium text-gray-900"
-                            >
-                                TV, Audio-Video
-                            </label>
-                        </div>
-
-                        {props.categories?.map((category) => (
-                            <FilterCategoriesInput
-                                key={category.id}
-                                category={category}
-                                handleProductPagination={
-                                    handleProductPagination
-                                }
-                            />
+                        {props.subCategories?.map((category) => (
+                            // <FilterCategoriesInput
+                            //     key={category.id}
+                            //     category={category}
+                            //     handleProductPagination={
+                            //         handleProductPagination
+                            //     }
+                            // />
+                            <div>
+                                <Link
+                                    className="hover:underline"
+                                    href={`/filterProduct/${category.name}`}
+                                >
+                                    {category.name}
+                                </Link>
+                            </div>
                         ))}
 
-                        <a
+                        {/* <a
                             href="#"
                             className="flex items-center text-sm font-medium text-primary-600  hover:underline"
                         >
                             View all
-                        </a>
+                        </a> */}
                     </div>
 
                     {/* <!-- Prices --> */}
@@ -154,25 +137,24 @@ const ProductFilterMenu = ({
                             </div> */}
 
                             <div className="space-y-2">
-                                <div className="border-t border-gray-200 p-4">
-                                    <div className="flex justify-between gap-4">
+                                <div className="border-t border-gray-200 py-4 px-2">
+                                    <div className="flex justify-between items-end gap-2">
                                         <label
                                             htmlFor="FilterPriceFrom"
                                             className="flex items-center gap-2"
                                         >
-                                            <span className="text-sm text-gray-600">
-                                                $
-                                            </span>
-
                                             <input
-                                                type="number"
+                                                type="text"
                                                 id="FilterPriceFrom"
-                                                placeholder="From"
+                                                placeholder={"Min"}
                                                 className="w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
-                                                value={lowestPrice}
+                                                value={priceRange.min}
                                                 onChange={(e) =>
-                                                    handleLowChange(
-                                                        e.target.value
+                                                    setPriceRange(
+                                                        (prevPrice) => ({
+                                                            ...prevPrice,
+                                                            min: e.target.value,
+                                                        })
                                                     )
                                                 }
                                             />
@@ -180,25 +162,31 @@ const ProductFilterMenu = ({
 
                                         <label
                                             htmlFor="FilterPriceTo"
-                                            className="flex items-center gap-2"
+                                            className="flex items-center gap-1"
                                         >
-                                            <span className="text-sm text-gray-600">
-                                                $
-                                            </span>
-
                                             <input
-                                                type="number"
+                                                type="text"
                                                 id="FilterPriceTo"
-                                                placeholder="To"
-                                                className="w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
-                                                value={highestPrice}
+                                                placeholder={params?.max || "Max"}
+                                                className="w-full rounded-md border-gray-200 shadow-sm sm:text-sm "
+                                                value={priceRange.max}
                                                 onChange={(e) =>
-                                                    handleHigChange(
-                                                        e.target.value
+                                                    setPriceRange(
+                                                        (prevPrice) => ({
+                                                            ...prevPrice,
+                                                            max: e.target.value,
+                                                        })
                                                     )
                                                 }
                                             />
                                         </label>
+                                        <button
+                                            type="button"
+                                            class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-md text-sm px-1 py-1 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                                            onClick={handlePriceRangeSubmit}
+                                        >
+                                            <IoMdArrowDropright size={20} />
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -537,21 +525,6 @@ const ProductFilterMenu = ({
                             </label>
                         </div>
                     </div>
-                </div>
-
-                <div className="bottom-0 left-0 flex justify-center w-full pb-4  mt-6  md:px-4 absolute lg:static">
-                    <button
-                        class="rounded-md bg-blue-600 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-blue-700 focus:shadow-none active:bg-blue-700 hover:bg-blue-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none ml-2"
-                        type="button"
-                    >
-                        Apply
-                    </button>
-                    <button
-                        class="rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none ml-2"
-                        type="button"
-                    >
-                        Button
-                    </button>
                 </div>
             </div>
         </form>

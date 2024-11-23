@@ -70,7 +70,7 @@ const EcommerceLayout = ({ children }) => {
                                     Login
                                 </Link>
                                 <Link
-                                    href="/register "
+                                    href="/register"
                                     className="px-6 py-2  bg-black text-white text-sm rounded-md font-semibold hover:bg-black/[0.8] hover:shadow-lg"
                                 >
                                     Register
@@ -154,9 +154,9 @@ const EcommerceLayout = ({ children }) => {
                                         vertical: "bottom",
                                     }}
                                 >
-                                    <Link href="/myAccount">
+                                    <Link href="/myOrder">
                                         <MenuItem onClick={handleClose}>
-                                            <Avatar /> My account
+                                            <Avatar />Orders
                                         </MenuItem>
                                     </Link>
                                     {/* <Divider />

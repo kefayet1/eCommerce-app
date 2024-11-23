@@ -10,15 +10,15 @@ const HomeCategoryMobileMenu = ({ category }) => {
             <div className="w-full hover:bg-blue-100 hover:text-[#000] px-2 py-2">
                 <div
                     className="flex rounded-sm hover:bg-blue-300 justify-between items-center px-2 py-2"
-                    onClick={() => setOpen(!open)}
+                    
                 >
                     <span>{category.name}</span>
                     {category?.childCategories?.length > 0 && (
                         <span>
                             {open ? (
-                                <MdKeyboardArrowDown size={20} />
+                                <MdKeyboardArrowDown size={20} onClick={() => setOpen(!open)}/>
                             ) : (
-                                <MdKeyboardArrowRight size={20} />
+                                <MdKeyboardArrowRight size={20} onClick={() => setOpen(!open)}/>
                             )}
                         </span>
                     )}
