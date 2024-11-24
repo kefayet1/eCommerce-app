@@ -80,7 +80,7 @@ class ProductController extends Controller
         Product::where("id", "=", $request->input("id"))->update([
             'name' => $request->input('name'),
             'price' => $request->input('price'),
-            'unit' => $request->input(key: 'unit'),
+            'unit' => $request->input( 'unit'),
             'category_id' => $request->input('categoryId'),
             'img_url' => $img_url ?: $request->input("oldImage"),
         ]);

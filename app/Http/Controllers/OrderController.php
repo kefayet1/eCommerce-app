@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Mail\OrderSuccess;
 use App\Http\Helper\Paypal;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
@@ -12,6 +13,7 @@ use App\Http\Helper\SSLCommerz;
 use App\Http\Helper\StripeHelper;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 
 class OrderController extends Controller
@@ -122,6 +124,24 @@ class OrderController extends Controller
 
     public function stripeOrderSuccess(Request $request, $transitionId, $orderId)
     {
+        $order = DB::table("orders")
+            ->leftJoin("transactions", "orders.id", "=", "transactions.order_id")
+            ->where("orders.id", "=", $orderId)
+            ->where("orders.user_id", "=", Auth::user()->id)
+            ->select("orders.id", "orders.ship_details", "orders.delivery_status", "orders.created_at", "transactions.payment_status", "transactions.payment_method", "transactions.total", "transactions.payable", "transactions.vat")
+            ->first();
+
+        $order_items = DB::table("order_items")
+            ->leftJoin("products", "order_items.product_id", "=", "products.id")
+            ->where("order_items.order_id", "=", $orderId)
+            ->select("order_items.id", "order_items.sale_price", "order_items.qty", "products.name", "products.price")
+            ->get();
+
+        $user = Auth::user();
+
+
+        Mail::to($user->email)->send(new OrderSuccess($order, $order_items, $user));
+
         StripeHelper::success($request, $transitionId, $orderId);
         return Inertia::render("Ecom/PaymentSuccess", ['orderId' => $orderId, 'tran_id' => $transitionId, 'paymentMethod' => "Stripe"]);
     }
