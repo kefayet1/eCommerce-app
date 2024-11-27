@@ -10,7 +10,11 @@ use App\Models\Category;
 use App\Models\Customer;
 use App\Models\OrderItem;
 use App\Models\Transaction;
+use Illuminate\Support\Arr;
+use App\Models\ProductReview;
+use App\Models\VariationType;
 use Illuminate\Database\Seeder;
+use App\Models\ProductVariation;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 
@@ -529,10 +533,51 @@ class DatabaseSeeder extends Seeder
             'parent_id' => $vehicleAccessories->id
         ]);
 
+
+
+        // Product variation TYpe
+        $weight = VariationType::create([
+            'name' => 'weight',
+            'active' => true
+        ]);
+
+        $size = VariationType::create([
+            'name' => 'size',
+            'active' => true
+        ]);
+
+        $color = VariationType::create([
+            'name' => 'color',
+            'active' => true
+        ]);
+
+        // User::factory(3)
+        //         ->has(Product::factory()->count(3))
+        //         ->create();
         Product::factory(200)->create();
         Order::factory(200)->create();
         OrderItem::factory(200)->create();
         Customer::factory(200)->create();
         Transaction::factory(200)->create();
+
+        for ($i = 0; $i < 100; $i++) {
+            $product_id = rand(1, 100);
+            for ($j = 0; $j < rand(1, 6); $j++) {
+                ProductVariation::create([
+                    "variation_value" => fake()->safeColorName(),
+                    "product_id" => $product_id,
+                    'variation_type_id' => $color->id
+                ]);
+            }
+
+            for ($j = 0; $j < rand(3, 6); $j++) {
+                ProductVariation::create([
+                    "variation_value" => ["XS", "S", "M", "L", "XL", "2XL"][$j],
+                    "product_id" => $product_id,
+                    'variation_type_id' => $size->id
+                ]);
+            }
+        }
+        ProductReview::factory(400)->create();
     }
 }

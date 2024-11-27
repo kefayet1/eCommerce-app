@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -29,7 +30,7 @@ class ProductFactory extends Factory
             "star" => fake()->randomFloat(1,5),
             "remark" => $remark[rand(0,5)],
             'img_url' => 'https://random-image-pepebigotes.vercel.app/api/random-image',
-            'user_id' => rand(1, 20),
+            'user_id' => User::factory()->create()->id,
             'category_id' => rand(1, 10)
         ];
     }

@@ -19,6 +19,7 @@ const ProductPage = () => {
         dispatch(addProduct(product));
     };
 
+    console.log(Object.entries(props.product_variation));
     return (
         <section className="max-w-[1320px] lg:w-[80%] w-[95%] mx-auto py-12 sm:py-16">
             <div className="container mx-auto px-4">
@@ -202,94 +203,35 @@ const ProductPage = () => {
                             </p>
                         </div>
 
-                        <h2 className="mt-8 text-base text-gray-900">
-                            Coffee Type
-                        </h2>
-                        <div className="mt-3 flex select-none flex-wrap items-center gap-1">
-                            <label className="">
-                                <input
-                                    type="radio"
-                                    name="type"
-                                    value="Powder"
-                                    className="peer sr-only"
-                                    checked
-                                />
-                                <p className="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
-                                    Powder
-                                </p>
-                            </label>
-                            <label className="">
-                                <input
-                                    type="radio"
-                                    name="type"
-                                    value="Whole Bean"
-                                    className="peer sr-only"
-                                />
-                                <p className="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
-                                    Whole Bean
-                                </p>
-                            </label>
-                            <label className="">
-                                <input
-                                    type="radio"
-                                    name="type"
-                                    value="Groud"
-                                    className="peer sr-only"
-                                />
-                                <p className="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
-                                    Groud
-                                </p>
-                            </label>
-                        </div>
+                        {Object.entries(props.product_variation).map(
+                            (variant, index) => (
+                                <>
+                                    {/* {console.log(variant)} */}
+                                    <h2 className="mt-8 text-base text-gray-900">
+                                        {variant[0]}
+                                    </h2>
+                                    <div className="mt-3 flex select-none flex-wrap items-center gap-1">
+                                        {variant[1].map((type) => (
+                                            <>
+                                                <label className="">
+                                                    <input
+                                                        type="radio"
+                                                        name="type"
+                                                        value="Powder"
+                                                        className="peer sr-only"
+                                                        checked
+                                                    />
+                                                    <p className="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
+                                                        {type.variation_value}
+                                                    </p>
+                                                </label>
+                                            </>
+                                        ))}
+                                    </div>
+                                </>
+                            )
+                        )}
 
-                        <h2 className="mt-8 text-base text-gray-900">
-                            Choose subscription
-                        </h2>
-                        <div className="mt-3 flex select-none flex-wrap items-center gap-1">
-                            <label className="">
-                                <input
-                                    type="radio"
-                                    name="subscription"
-                                    value="4 Months"
-                                    className="peer sr-only"
-                                />
-                                <p className="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
-                                    4 Months
-                                </p>
-                                <span className="mt-1 block text-center text-xs">
-                                    $80/mo
-                                </span>
-                            </label>
-                            <label className="">
-                                <input
-                                    type="radio"
-                                    name="subscription"
-                                    value="8 Months"
-                                    className="peer sr-only"
-                                    checked
-                                />
-                                <p className="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
-                                    8 Months
-                                </p>
-                                <span className="mt-1 block text-center text-xs">
-                                    $60/mo
-                                </span>
-                            </label>
-                            <label className="">
-                                <input
-                                    type="radio"
-                                    name="subscription"
-                                    value="12 Months"
-                                    className="peer sr-only"
-                                />
-                                <p className="peer-checked:bg-black peer-checked:text-white rounded-lg border border-black px-6 py-2 font-bold">
-                                    12 Months
-                                </p>
-                                <span className="mt-1 block text-center text-xs">
-                                    $40/mo
-                                </span>
-                            </label>
-                        </div>
 
                         <div className="mt-10 flex flex-col items-center justify-between space-y-4 border-t border-b py-4 sm:flex-row sm:space-y-0">
                             <div className="flex items-end">

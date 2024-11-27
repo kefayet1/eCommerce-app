@@ -9,4 +9,9 @@ class VariationType extends Model
 {
     use HasFactory;
     protected $fillable = ['name', 'active'];
+
+    public function productVariations()
+    {
+        return $this->hasMany(ProductVariation::class);
+    }
 }
