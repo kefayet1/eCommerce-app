@@ -11,6 +11,7 @@ use App\Http\Controllers\ManageRoleController;
 use App\Http\Controllers\MyOrderController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderDetailsController;
+use App\Http\Controllers\OtpController;
 use App\Http\Controllers\OverviewController;
 use App\Http\Controllers\PaypalController;
 use App\Http\Controllers\ProductController;
@@ -35,7 +36,12 @@ Route::get('/cart', function () {
     return Inertia::render('Ecom/Cart');
 });
 
-
+Route::get("/sentOtp", [OtpController::class, "sentOtp"]);
+Route::post("/createOtp", [OtpController::class, "createOtp"]);
+Route::get("/verifyOtp/{otp_token}/{email}", [OtpController::class, "verifyOtp"]);
+Route::post("/sentOtpForVerifyOtp", [OtpController::class, "sentOtpForVerifyOtp"]);
+Route::get("/otpResetPassword/{otp_token}/{email}/{resetPasswordToken}", [OtpController::class, "otpResetPassword"]);
+Route::post("/resetUserPassword", [OtpController::class, "resetUserPassword"]);
 
 // Dashboard
 Route::get(

@@ -23,7 +23,6 @@ const DashboardLayout = ({ children, pageName }) => {
 
     useEffect(() => {
         document.addEventListener("click", handleSidebar, true);
-
         () => {
             document.removeEventListener("click", handleSidebar, true);
         };

@@ -11,6 +11,7 @@ use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Http\Helper\SSLCommerz;
 use App\Http\Helper\StripeHelper;
+use App\Jobs\OrderSuccessJob;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -138,13 +139,15 @@ class OrderController extends Controller
             ->get();
 
         $user = Auth::user();
+        $configuration = "";
 
-
-        Mail::to($user->email)->send(new OrderSuccess($order, $order_items, $user));
+        
+        OrderSuccessJob::dispatch($user->email,$order,$order_items, $user);
 
         StripeHelper::success($request, $transitionId, $orderId);
         return Inertia::render("Ecom/PaymentSuccess", ['orderId' => $orderId, 'tran_id' => $transitionId, 'paymentMethod' => "Stripe"]);
     }
+    
 
     public function sslCommerzOrderSuccess(Request $request)
     {
