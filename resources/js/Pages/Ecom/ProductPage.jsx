@@ -3,7 +3,9 @@ import Reviews from "@/Components/Reviews";
 import { addProduct } from "@/features/cartProductSlice";
 import EcommerceLayout from "@/Layouts/EcommerceLayout";
 import { usePage } from "@inertiajs/react";
+import { Rating } from "@mui/material";
 import { useState } from "react";
+import { FaRegStar, FaStar, FaStarHalfAlt } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 
 const ProductPage = () => {
@@ -13,13 +15,18 @@ const ProductPage = () => {
         "https://plus.unsplash.com/premium_photo-1727942416727-9f16462ef11b?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     );
     const dispatch = useDispatch();
+    const totalRating =
+        props.product_review.data.reduce(
+            (acc, curVal) => acc + curVal.rating,
+            0
+        ) / props.product_review.data.length;
+    const stars = [1, 2, 3, 4, 5];
 
     const handleAddProduct = (product) => {
         console.log(product);
         dispatch(addProduct(product));
     };
 
-    console.log(Object.entries(props.product_variation));
     return (
         <section className="max-w-[1320px] lg:w-[80%] w-[95%] mx-auto py-12 sm:py-16">
             <div className="container mx-auto px-4">
@@ -142,64 +149,33 @@ const ProductPage = () => {
 
                         <div className="mt-5 flex items-center">
                             <div className="flex items-center">
-                                <svg
-                                    className="block h-4 w-4 align-middle text-yellow-500"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                >
-                                    <path
-                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-                                        className=""
-                                    ></path>
-                                </svg>
-                                <svg
-                                    className="block h-4 w-4 align-middle text-yellow-500"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                >
-                                    <path
-                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-                                        className=""
-                                    ></path>
-                                </svg>
-                                <svg
-                                    className="block h-4 w-4 align-middle text-yellow-500"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                >
-                                    <path
-                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-                                        className=""
-                                    ></path>
-                                </svg>
-                                <svg
-                                    className="block h-4 w-4 align-middle text-yellow-500"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                >
-                                    <path
-                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-                                        className=""
-                                    ></path>
-                                </svg>
-                                <svg
-                                    className="block h-4 w-4 align-middle text-yellow-500"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                >
-                                    <path
-                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-                                        className=""
-                                    ></path>
-                                </svg>
+                                {stars.map((star, index) => {
+                                    if (index < Math.floor(totalRating)) {
+                                        return (
+                                            <FaStar color="orange" size={20} />
+                                        );
+                                    } else if (
+                                        index === Math.floor(totalRating) &&
+                                        totalRating % 1 >= 0.5
+                                    ) {
+                                        return (
+                                            <FaStarHalfAlt
+                                                color="orange"
+                                                size={20}
+                                            />
+                                        );
+                                    } else {
+                                        return (
+                                            <FaRegStar
+                                                color="orange"
+                                                size={20}
+                                            />
+                                        );
+                                    }
+                                })}
                             </div>
                             <p className="ml-2 text-sm font-medium text-gray-500">
-                                1,209 Reviews
+                                {totalRating.toFixed(1)} Reviews
                             </p>
                         </div>
 
@@ -231,7 +207,6 @@ const ProductPage = () => {
                                 </>
                             )
                         )}
-
 
                         <div className="mt-10 flex flex-col items-center justify-between space-y-4 border-t border-b py-4 sm:flex-row sm:space-y-0">
                             <div className="flex items-end">
@@ -331,7 +306,7 @@ const ProductPage = () => {
                                     Reviews
                                     <span className="ml-2 block rounded-full bg-gray-500 px-2 py-px text-xs font-bold text-gray-100">
                                         {" "}
-                                        1,209{" "}
+                                        {props.product_review.total}{" "}
                                     </span>
                                 </button>
                             </nav>

@@ -28,9 +28,9 @@ class FilterProductController extends Controller
             ->selectRaw('MIN(CAST(price AS DECIMAL(10, 2))) as lowest_price')
             ->first();
 
-            $products = DB::table("products")
-            ->leftJoin("categories", "products.category_id", "=", "categories.id")
-
+            $products = DB::table("products as p")
+            ->leftJoin("categories", "p.category_id", "=", "categories.id")
+            ->leftJoin("product_reviews as pr", "p.id", "=", "pr.product_id")
             // if subCategories is empty that mean it not have any child category then current category product will return
             ->when($subCategories->isEmpty(), function ($query) use ($category) {
                 return $query->where('categories.id', $category->id);
@@ -41,10 +41,10 @@ class FilterProductController extends Controller
             })
             ->when($request->query('min') || $request->query( 'max'), function ($query) use ($request) {
                 $priceRange = $request->query('priceRange');
-                return $query->whereBetween('products.price', [(int)$request->query('min'), (int)$request->query('max')]);
+                return $query->whereBetween('p.price', [(int)$request->query('min'), (int)$request->query('max')]);
             })
-            ->select("products.*")
-            ->groupBy('products.id') // Optional, only if needed
+            ->select("p.id", "p.name", "p.short_des", "p.unit", "p.star", "p.remark", "p.category_id", "p.created_at", "p.price", DB::raw('SUM(pr.rating) as sumOfRating'), DB::raw("COUNT(pr.id) as totalRating"))
+            ->groupBy("p.id", "p.name", "p.short_des", "p.unit", "p.star", "p.remark", "p.category_id", "p.created_at", "p.price") // Optional, only if needed
             ->paginate(12)
             ->withQueryString();
 

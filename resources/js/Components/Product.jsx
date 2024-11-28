@@ -2,6 +2,7 @@ import { addProduct } from "@/features/cartProductSlice";
 import { Link } from "@inertiajs/react";
 import React from "react";
 import { BsStarFill } from "react-icons/bs";
+import { FaRegStar, FaStar, FaStarHalfAlt } from "react-icons/fa";
 import { MdStar } from "react-icons/md";
 import { useDispatch } from "react-redux";
 
@@ -11,6 +12,10 @@ const Product = ({ productDetails }) => {
     const handleAddProdToCart = () => {
         dispatch(addProduct(productDetails));
     };
+
+    const ratingDivision = parseInt(productDetails.sumOfRating) / productDetails.totalRating;
+    const stars = [1,2,3,4,5];
+    console.log(ratingDivision);
     return (
         <div className="rounded-lg border border-gray-200 bg-white shadow-sm">
             <div className="h-56 w-full">
@@ -115,26 +120,45 @@ const Product = ({ productDetails }) => {
                 </Link>
 
                 <div className="mt-2 flex items-center gap-2">
-                    <div className="">
-                        <div className="md:block hidden md:flex items-center gap-1">
-                            <BsStarFill color="#FF9529" />
-                            <BsStarFill color="#FF9529" />
-                            <BsStarFill color="#FF9529" />
-                            <BsStarFill color="#FF9529" />
-                            <BsStarFill color="#FF9529" />
-                        </div>
+                    <div className="flex">
+                    {stars.map((star, index) => {
+                                    if (index < Math.floor(ratingDivision)) {
+                                        return (
+                                            <FaStar color="orange" size={20} />
+                                        );
+                                    } else if (
+                                        index === Math.floor(ratingDivision) &&
+                                        ratingDivision % 1 >= 0.5
+                                    ) {
+                                        return (
+                                            <FaStarHalfAlt
+                                                color="orange"
+                                                size={20}
+                                            />
+                                        );
+                                    } else {
+                                        return (
+                                            <FaRegStar
+                                                color="orange"
+                                                size={20}
+                                            />
+                                        );
+                                    }
+                                })}
 
-                        <div className="md:hidden flex items-center gap-[1.5px]">
+                        {/* <div className="md:hidden flex items-center gap-[1.5px]">
                             <BsStarFill color="#FF9529" size={10} />
                             <BsStarFill color="#FF9529" size={10} />
                             <BsStarFill color="#FF9529" size={10} />
                             <BsStarFill color="#FF9529" size={10} />
                             <BsStarFill color="#FF9529" size={10} />
-                        </div>
+                        </div> */}
                     </div>
 
-                    <p className="text-sm font-medium text-gray-900 ">5.0</p>
-                    <p className="text-sm font-medium text-gray-500 ">(455)</p>
+                    <p className="text-sm font-medium text-gray-900 ">{ratingDivision.toFixed(1)}</p>
+                    <p className="text-sm font-medium text-gray-500 ">
+                        ({productDetails?.totalRating})
+                    </p>
                 </div>
 
                 <ul className="mt-4 flex items-center justify-between">

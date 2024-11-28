@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ProductReview;
 use Inertia\Inertia;
 use App\Models\Product;
 use App\Models\Category;
@@ -15,9 +16,31 @@ class ProductEcomController extends Controller
     //
     public function index()
     {
-        $popularProduct = Product::where("remark", "=", "popular")->take(4)->get();
-        $featuredProduct = Product::where("remark", "=", "featured")->take(8)->get();
-        $topSellingProduct = Product::where("remark", "=", "top")->take(4)->get();
+        $popularProduct = DB::table("products as p")
+            ->leftJoin("product_reviews", "p.id", "=", "product_reviews.product_id")
+            ->where("p.remark", "=", "popular")
+            ->select("p.id", "p.name", "p.short_des", "p.unit", "p.star", "p.remark", "p.category_id", "p.created_at", "p.price", DB::raw('SUM(product_reviews.rating) as sumOfRating'), DB::raw("COUNT(product_reviews.id) as totalRating"))
+            ->groupBy("p.id", "p.name", "p.short_des", "p.unit", "p.star", "p.remark", "p.category_id", "p.created_at", "p.price")
+            ->orderByDesc(DB::raw('SUM(product_reviews.rating)'))
+            ->take(4)
+            ->get();
+        // dd($popularProduct);
+        $featuredProduct = DB::table("products as p")
+            ->leftJoin("product_reviews", "p.id", "=", "product_reviews.product_id")
+            ->where("p.remark", "=", "featured")
+            ->select("p.id", "p.name", "p.short_des", "p.unit", "p.star", "p.remark", "p.category_id", "p.created_at", "p.price", DB::raw('SUM(product_reviews.rating) as sumOfRating'), DB::raw("COUNT(product_reviews.id) as totalRating"))
+            ->groupBy("p.id", "p.name", "p.short_des", "p.unit", "p.star", "p.remark", "p.category_id", "p.created_at", "p.price")
+            ->orderByDesc(DB::raw('SUM(product_reviews.rating)'))
+            ->take(8)
+            ->get();
+        $topSellingProduct = DB::table("products as p")
+            ->leftJoin("product_reviews", "p.id", "=", "product_reviews.product_id")
+            ->where("p.remark", "=", "top")
+            ->select("p.id", "p.name", "p.short_des", "p.unit", "p.star", "p.remark", "p.category_id", "p.created_at", "p.price", DB::raw('SUM(product_reviews.rating) as sumOfRating'), DB::raw("COUNT(product_reviews.id) as totalRating"))
+            ->groupBy("p.id", "p.name", "p.short_des", "p.unit", "p.star", "p.remark", "p.category_id", "p.created_at", "p.price")
+            ->orderByDesc(DB::raw('SUM(product_reviews.rating)'))
+            ->take(4)
+            ->get();
 
         //category tree
         $categories = Category::select("id", "name", "parent_id")->get();
@@ -45,6 +68,11 @@ class ProductEcomController extends Controller
         $categoryTree = buildCategoryTree($groupCategory, null);
         // dd($categoryTree);
 
+        // $productWithRemark = DB::table("products")
+        //     ->whereIn("products.remark", ['popular', 'featured', 'top'])
+        //     ->select("products.name", "products.price", "products.remark")
+        //     ->get();
+        // dd($productWithRemark);
         return Inertia::render("Ecom/Home", ['popular' => $popularProduct, 'featuredProduct' => $featuredProduct, 'top' => $topSellingProduct, "categoryTree" => $categoryTree]);
     }
 
@@ -54,6 +82,8 @@ class ProductEcomController extends Controller
             return Product::find($productId);
         });
 
+
+        //product variation
         $variations = DB::table("variation_types")
             ->leftJoin("product_variations", "variation_types.id", "=", "product_variations.variation_type_id")
             ->where("product_variations.product_id", "=", $productId)
@@ -63,18 +93,24 @@ class ProductEcomController extends Controller
                 "variation_types.id as type_id"
             )
             ->get();
-            // dd($variations[0]);
+        // dd($variations[0]);
         $variationArr = [];
-        foreach($variations as $variation){
+        foreach ($variations as $variation) {
             // dd($variationArr[$variation['type_name']]);
-            if(isset($variationArr[$variation->type_name])){
+            if (isset($variationArr[$variation->type_name])) {
                 $variationArr[$variation->type_name][] = $variation;
-            }else{
+            } else {
                 $variationArr[$variation->type_name] = [$variation];
             }
         }
         // dd($variationArr);
-        
-        return Inertia::render('Ecom/ProductPage', ["product" => $product, 'product_variation' => $variationArr]);
+
+        $productReview = DB::table("product_reviews")
+            ->leftJoin("users", "product_reviews.user_id", "=", "users.id")
+            ->where("product_reviews.product_id", "=", $productId)
+            ->select("users.id as userId", "users.name as userName", "product_reviews.*")
+            ->paginate(10);
+
+        return Inertia::render('Ecom/ProductPage', ["product" => $product, 'product_variation' => $variationArr, "product_review" => $productReview]);
     }
 }
