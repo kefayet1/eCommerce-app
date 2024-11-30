@@ -7,9 +7,12 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useContext } from "react";
 import { useRef } from "react";
+import { RxCross1 } from "react-icons/rx";
 
 const SubCategories = () => {
     const FormRef = useRef(null);
+    const DropdownRef = useRef(null);
+    const [fakeState, setFakeState] = useState(false);
     const { props } = usePage();
     const { a, b, showForm, setShowForm } = useContext(DashboardActionContext);
     const [openEditForm, setOpenEditForm] = useState(false);
@@ -17,28 +20,46 @@ const SubCategories = () => {
     const { data, setData, post, processing, errors } = useForm({
         name: "",
         parent_id: null,
+        variations: [],
     });
 
     const handleHideForm = (e) => {
-        if (FormRef.current && !FormRef.current.contains(e.target)) {
-            console.log("helle event");
-            setShowForm(false);
-            setOpenEditForm(false);
-            setData({
-                name: "",
-                parent_id: "",
-                id: 0,
-            });
-        }
+        //    console.log(DropdownRef.current && DropdownRef.current.contains(e.target))
+        // console.log(DropdownRef.current);
+        // if (
+        //     FormRef.current &&
+        //     !FormRef.current.contains(e.target) &&
+        //     DropdownRef.current &&
+        //     DropdownRef.current.contains(e.target)
+        // ) {
+        console.log("helle event");
+        setShowForm(false);
+        setOpenEditForm(false);
+        setData({
+            name: "",
+            parent_id: "",
+            variations: [],
+            id: 0,
+        });
+        // }
     };
 
-    useEffect(() => {
-        document.addEventListener("click", handleHideForm, true);
+    // useEffect(() => {
+    //     document.addEventListener("click", handleHideForm, true);
 
-        () => {
-            document.removeEventListener("click", handleHideForm, true);
-        };
-    }, []);
+    //     () => {
+    //         document.removeEventListener("click", handleHideForm, true);
+    //     };
+    // }, []);
+
+    // useEffect(() => {
+    //     const materialDropDown = document.querySelector(
+    //         ".MuiAutocomplete-popper"
+    //     );
+
+    //     DropdownRef.current = materialDropDown;
+    //     // console.log(materialDropDown);
+    // }, [fakeState]);
 
     const handleSubmitForm = (e) => {
         e.preventDefault();
@@ -49,7 +70,7 @@ const SubCategories = () => {
         });
     };
 
-    console.log(props);
+    // console.log(props.variations);
 
     const getEditFrom = (data) => {
         console.log(data);
@@ -71,12 +92,14 @@ const SubCategories = () => {
         });
     };
 
+    console.log(DropdownRef, "ehlowlksjdlkdslkd");
+
     return (
         <>
             {(showForm || openEditForm) && (
                 <div className="w-full h-screen flex justify-center bg-[#11111194] absolute top-0 left-0 z-50">
                     <div
-                        className="flex justify-center w-[25rem] h-64 p-5 bg-white lg:ml-20 mt-40 rounded-md"
+                        className="flex justify-center w-[25rem] h-72 p-6 bg-white lg:ml-20 mt-40 rounded-md"
                         ref={FormRef}
                     >
                         <form
@@ -129,6 +152,32 @@ const SubCategories = () => {
                                             )}
                                         />
                                     </div>
+                                    <div
+                                        className="md:col-span-5 flex flex-col"
+                                        onClick={() => setFakeState(!fakeState)}
+                                    >
+                                        <Autocomplete
+                                            multiple
+                                            id="tags-standard"
+                                            options={props.variations}
+                                            getOptionLabel={(option) =>
+                                                option.label
+                                            }
+                                            // defaultValue={[top100Films[13]]}
+                                            onChange={(e, value) =>
+                                                setData("variations", value)
+                                            }
+                                            renderInput={(params) => (
+                                                <TextField
+                                                    // ref={DropdownRef}
+                                                    {...params}
+                                                    variant="standard"
+                                                    label="Multiple values"
+                                                    placeholder="Favorites"
+                                                />
+                                            )}
+                                        />
+                                    </div>
                                 </div>
                             </div>
                             <button
@@ -141,6 +190,11 @@ const SubCategories = () => {
                                 Submit
                             </button>
                         </form>
+                        <div className="" onClick={handleHideForm}>
+                            <button className="p-2 ml-1 rounded-full bg-red-500">
+                                <RxCross1 color="white" />
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}
@@ -170,14 +224,14 @@ const SubCategories = () => {
                                             class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize min-w-[150px]"
                                         >
                                             {" "}
-                                            Full Name &amp; Email{" "}
+                                            Attribute name{" "}
                                         </th>
                                         <th
                                             scope="col"
                                             class="p-5 text-left whitespace-nowrap text-sm leading-6 font-semibold text-gray-900 capitalize"
                                         >
                                             {" "}
-                                            Join Date{" "}
+                                            create at{" "}
                                         </th>
 
                                         <th
@@ -197,7 +251,7 @@ const SubCategories = () => {
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-300 ">
-                                    {props.subCategory.map((category) => (
+                                    {props.subCategory.data.map((category) => (
                                         <SubCateTableInput
                                             data={category}
                                             key={category.id}

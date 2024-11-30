@@ -23,10 +23,12 @@ class FilterProductController extends Controller
 
         // dd([...$subCategories->pluck('id'), $category->id]);
         //heist and lowest product price
-        $heistLowProdPrice = DB::table('products')
-            ->selectRaw('MAX(CAST(price AS DECIMAL(10, 2))) as highest_price')
-            ->selectRaw('MIN(CAST(price AS DECIMAL(10, 2))) as lowest_price')
-            ->first();
+        // $heistLowProdPrice = DB::table('products')
+        //     ->selectRaw('MAX(CAST(price AS DECIMAL(10, 2))) as highest_price')
+        //     ->selectRaw('MIN(CAST(price AS DECIMAL(10, 2))) as lowest_price')
+        //     ->first();
+
+
 
             $products = DB::table("products as p")
             ->leftJoin("categories", "p.category_id", "=", "categories.id")
@@ -55,7 +57,6 @@ class FilterProductController extends Controller
                 'subCategories' => $subCategories,
                 "products" => $products,
                 'categoriesParam' => $request->query('categories'),
-                'heistLowProdPrice' => [$request->query('priceRange')[1] ?? $heistLowProdPrice->highest_price, $request->query('priceRange')[0] ?? $heistLowProdPrice->lowest_price]
             ]
         );
     }

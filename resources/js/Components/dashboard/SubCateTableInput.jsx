@@ -6,6 +6,8 @@ const SubCateTableInput = ({ data, getEditFrom }) => {
         console.log(id);
         router.post("/deleteSubCategory", { id: id });
     };
+
+    console.log();
     return (
         <tr class="bg-white transition-all duration-500 hover:bg-gray-50">
             <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900 ">
@@ -18,25 +20,22 @@ const SubCateTableInput = ({ data, getEditFrom }) => {
             </td>
             <td class=" px-5 py-3">
                 <div class="w-48 flex items-center gap-3">
-                    <img
-                        src="https://pagedone.io/asset/uploads/1697536419.png"
-                        alt="Floyd image"
-                    />
-                    <div class="data">
-                        <p class="font-normal text-sm text-gray-900">
-                            Floyd Miles
-                        </p>
-                        <p class="font-normal text-xs leading-5 text-gray-400">
-                            {" "}
-                            floydmiles@pagedone.io{" "}
-                        </p>
-                    </div>
+                    {(data.variationsName &&
+                        data?.variationsName
+                            .split(",")
+                            .splice(0, 3)
+                            .join(",")) ||
+                        "................"}
                 </div>
             </td>
 
             <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
                 {" "}
-                Jun. 24, 2023{" "}
+                {data.created_at
+                    .split(" ")[0]
+                    .split("-")
+                    .reverse()
+                    .join("-")}{" "}
             </td>
 
             <td class="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
@@ -56,7 +55,10 @@ const SubCateTableInput = ({ data, getEditFrom }) => {
                 </div>
             </td>
             <td class="flex p-5 items-center gap-0.5">
-                <button onClick={()=> getEditFrom(data)} class="p-2  rounded-full bg-white group transition-all duration-500 hover:bg-indigo-600 flex item-center">
+                <button
+                    onClick={() => getEditFrom(data)}
+                    class="p-2  rounded-full bg-white group transition-all duration-500 hover:bg-indigo-600 flex item-center"
+                >
                     <svg
                         class="cursor-pointer"
                         width="20"
@@ -72,7 +74,10 @@ const SubCateTableInput = ({ data, getEditFrom }) => {
                         ></path>
                     </svg>
                 </button>
-                <button onClick={()=> handleDelete(data.id)} class="p-2 rounded-full bg-white group transition-all duration-500 hover:bg-red-600 flex item-center">
+                <button
+                    onClick={() => handleDelete(data.id)}
+                    class="p-2 rounded-full bg-white group transition-all duration-500 hover:bg-red-600 flex item-center"
+                >
                     <svg
                         class=""
                         width="20"
@@ -88,7 +93,7 @@ const SubCateTableInput = ({ data, getEditFrom }) => {
                         ></path>
                     </svg>
                 </button>
-                <button  class="p-2 rounded-full bg-white group transition-all duration-500 hover:bg-black flex item-center">
+                <button class="p-2 rounded-full bg-white group transition-all duration-500 hover:bg-black flex item-center">
                     <svg
                         width="20"
                         height="20"
