@@ -7,6 +7,7 @@ import { Box, Slider, Typography } from "@mui/material";
 import debounce from "debounce";
 import { useRef } from "react";
 import { IoMdArrowDropright } from "react-icons/io";
+import FilterCheckbox from "./FilterCheckbox";
 
 function valuetext(value) {
     return `${(value, "ldsjl")}°C`;
@@ -29,16 +30,17 @@ const ProductFilterMenu = ({
 
     const handlePriceRangeSubmit = () => {
         router.get(
-            route("filterProduct", { categoryName: currentCategoryName }),{
+            route("filterProduct", { categoryName: currentCategoryName }),
+            {
                 max: priceRange.max,
-                min: priceRange.min
+                min: priceRange.min,
             }
         );
     };
 
-    console.log(params.min, 'swrrwe');
-    
-    console.log(params.get('min'));
+    console.log(params.min, "swrrwe");
+
+    console.log(params.get("min"));
 
     return (
         <form
@@ -101,6 +103,23 @@ const ProductFilterMenu = ({
                         >
                             View all
                         </a> */}
+                    </div>
+
+                    <div className="space-y-2">
+                        {props.productVariations.map((variation, index) => (
+                            <div className="" key={index}>
+                                {console.log(variation)}
+                                <h1 className="font-bold">{variation.name}</h1>
+                                {variation.variation_values.map(
+                                    (data, Vindex) => (
+                                        <FilterCheckbox
+                                            data={data}
+                                            key={Vindex}
+                                        />
+                                    )
+                                )}
+                            </div>
+                        ))}
                     </div>
 
                     {/* <!-- Prices --> */}
@@ -167,7 +186,9 @@ const ProductFilterMenu = ({
                                             <input
                                                 type="text"
                                                 id="FilterPriceTo"
-                                                placeholder={params?.max || "Max"}
+                                                placeholder={
+                                                    params?.max || "Max"
+                                                }
                                                 className="w-full rounded-md border-gray-200 shadow-sm sm:text-sm "
                                                 value={priceRange.max}
                                                 onChange={(e) =>
