@@ -125,6 +125,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     //wishlist
     Route::get("/wishlist", [WishlistController::class, "index"]);
+    Route::post("/deleteWishListitem", [WishlistController::class, "deleteWishListItem"]);
+    Route::post("/addWishlistProd", [WishlistController::class, "addWishListItem"]);
 });
 
 

@@ -34,6 +34,7 @@ class FilterProductController extends Controller
             ->leftJoin("categories", "p.category_id", "=", "categories.id")
             ->leftJoin("product_reviews as pr", "p.id", "=", "pr.product_id")
             ->leftJoin("product_variations as pv", "p.id", "=", "pv.product_id")
+            ->leftJoin("wish_lists as wl", "p.id", "=", "wl.product_id")
 
             // if subCategories is empty that mean it not have any child category then current category product will return
             ->when($subCategories->isEmpty(), function ($query) use ($category) {
@@ -51,8 +52,8 @@ class FilterProductController extends Controller
                 // dd($request->input("variations"));
                 return $query->whereIn("pv.variation_value", $request->input("variations"));
             })
-            ->select("p.id", "p.name", "p.short_des", "p.unit", "p.star", "p.remark", "p.category_id", "p.created_at", "p.price", DB::raw('SUM(pr.rating) as sumOfRating'), DB::raw("COUNT(pr.id) as totalRating"))
-            ->groupBy("p.id", "p.name", "p.short_des", "p.unit", "p.star", "p.remark", "p.category_id", "p.created_at", "p.price") // Optional, only if needed
+            ->select("p.id", "p.name", "p.short_des", "p.unit", "p.star", "p.remark", "p.category_id", "p.created_at", "p.price", DB::raw('SUM(pr.rating) as sumOfRating'), DB::raw("COUNT(pr.id) as totalRating"), "wl.id as wishListItemId", "wl.is_active as wishListItemActive")
+            ->groupBy("p.id", "p.name", "p.short_des", "p.unit", "p.star", "p.remark", "p.category_id", "p.created_at", "p.price", "wishListItemId", "wishListItemActive") // Optional, only if needed
             ->paginate(12)
             ->withQueryString();
 

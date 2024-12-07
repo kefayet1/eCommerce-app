@@ -1,11 +1,13 @@
 import { addProduct } from "@/features/cartProductSlice";
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 import React from "react";
 import { BsStarFill } from "react-icons/bs";
 import { FaRegStar, FaStar, FaStarHalfAlt } from "react-icons/fa";
+import { IoMdHeartEmpty } from "react-icons/io";
 import { MdStar } from "react-icons/md";
 import { useDispatch } from "react-redux";
-
+import { FiHeart } from "react-icons/fi";
+import { FaHeart as FaHeartFill } from "react-icons/fa";
 const Product = ({ productDetails }) => {
     const dispatch = useDispatch();
 
@@ -13,9 +15,18 @@ const Product = ({ productDetails }) => {
         dispatch(addProduct(productDetails));
     };
 
-    const ratingDivision = parseInt(productDetails.sumOfRating) / productDetails.totalRating;
-    const stars = [1,2,3,4,5];
+    const ratingDivision =
+        parseInt(productDetails.sumOfRating) / productDetails.totalRating;
+    const stars = [1, 2, 3, 4, 5];
     console.log(ratingDivision);
+
+    const handleAddWishlistItem = (prodId) => {
+        router.post("/addWishlistProd", { id: prodId });
+    };
+
+    const handleRemoveWishlistItem = (wishListId) => {
+        router.post("/deleteWishListitem", { wishlistId: wishListId });
+    };
     return (
         <div className="rounded-lg border border-gray-200 bg-white shadow-sm">
             <div className="h-56 w-full">
@@ -41,26 +52,6 @@ const Product = ({ productDetails }) => {
                             className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 md:block hidden"
                         >
                             <span className="sr-only"> Quick look </span>
-                            <svg
-                                className="h-5 w-5"
-                                aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"
-                                />
-                                <path
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-                                />
-                            </svg>
                         </button>
                         <div
                             id="tooltip-quick-look"
@@ -79,23 +70,21 @@ const Product = ({ productDetails }) => {
                             type="button"
                             data-tooltip-target="tooltip-add-to-favorites"
                             className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 "
+                            onClick={() =>
+                                productDetails.wishListItemActive
+                                    ? handleRemoveWishlistItem(
+                                          productDetails.wishListItemId
+                                      )
+                                    : handleAddWishlistItem(productDetails.id)
+                            }
                         >
                             <span className="sr-only"> Add to Favorites </span>
-                            <svg
-                                className="h-5 w-5"
-                                aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke="currentColor"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M12 6C6.5 1 1 8 5.8 13l6.2 7 6.2-7C23 8 17.5 1 12 6Z"
-                                />
-                            </svg>
+
+                            {productDetails.wishListItemActive ? (
+                                <FaHeartFill />
+                            ) : (
+                                <FiHeart />
+                            )}
                         </button>
                         <div
                             id="tooltip-add-to-favorites"
@@ -121,30 +110,20 @@ const Product = ({ productDetails }) => {
 
                 <div className="mt-2 flex items-center gap-2">
                     <div className="flex">
-                    {stars.map((star, index) => {
-                                    if (index < Math.floor(ratingDivision)) {
-                                        return (
-                                            <FaStar color="orange" size={20} />
-                                        );
-                                    } else if (
-                                        index === Math.floor(ratingDivision) &&
-                                        ratingDivision % 1 >= 0.5
-                                    ) {
-                                        return (
-                                            <FaStarHalfAlt
-                                                color="orange"
-                                                size={20}
-                                            />
-                                        );
-                                    } else {
-                                        return (
-                                            <FaRegStar
-                                                color="orange"
-                                                size={20}
-                                            />
-                                        );
-                                    }
-                                })}
+                        {stars.map((star, index) => {
+                            if (index < Math.floor(ratingDivision)) {
+                                return <FaStar color="orange" size={20} />;
+                            } else if (
+                                index === Math.floor(ratingDivision) &&
+                                ratingDivision % 1 >= 0.5
+                            ) {
+                                return (
+                                    <FaStarHalfAlt color="orange" size={20} />
+                                );
+                            } else {
+                                return <FaRegStar color="orange" size={20} />;
+                            }
+                        })}
 
                         {/* <div className="md:hidden flex items-center gap-[1.5px]">
                             <BsStarFill color="#FF9529" size={10} />
@@ -155,7 +134,9 @@ const Product = ({ productDetails }) => {
                         </div> */}
                     </div>
 
-                    <p className="text-sm font-medium text-gray-900 ">{ratingDivision.toFixed(1)}</p>
+                    <p className="text-sm font-medium text-gray-900 ">
+                        {ratingDivision.toFixed(1)}
+                    </p>
                     <p className="text-sm font-medium text-gray-500 ">
                         ({productDetails?.totalRating})
                     </p>

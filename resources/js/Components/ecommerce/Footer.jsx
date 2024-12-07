@@ -7,7 +7,7 @@ const Footer = () => {
     return (
         <footer
             class={`bg-white dark:bg-gray-900 w-full ${
-                (url === "/myOrder" || url === "/wishlist") &&
+                (url === "/myOrder") &&
                 "absolute bottom-0"
             }`}
         >
