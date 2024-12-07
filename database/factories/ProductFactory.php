@@ -18,11 +18,13 @@ class ProductFactory extends Factory
     public function definition(): array
     {
         $boolean = fake()->boolean();
+        $price = fake()->randomNumber(4);
         $remark = ["popular", "new", "top", "featured", "trending", "regular"];
         return [
             //
             'name' => fake()->name(),
-            'price' => fake()->randomNumber(4),
+            'price' => $price + rand(200,800),
+            'original_price' => $price,
             'unit' => fake()->randomNumber(5),
             "short_des" => fake()->text(250),
             "discount" => fake()->boolean(),

@@ -35,7 +35,7 @@ const DashboardLayout = ({ children, pageName }) => {
             <div className={`h-screen ${showSidebar ? "bg-slate-400" : ""}`}>
                 <div className="flex h-[100%]">
                     <div
-                        className={`left pr-4  lg:w-[20%]  md:w-[35%]  absolute top-0 hidden lg:block z-50 ${
+                        className={`left pr-4  lg:w-[20%]  md:w-[35%] lg:fixed absolute top-0 hidden lg:block z-50 ${
                             showSidebar ? "md:block " : ""
                         }`}
                         ref={SideBarRef}
@@ -59,8 +59,13 @@ const DashboardLayout = ({ children, pageName }) => {
                                             {pathname !== "/invoice" &&
                                                 pathname !== "/salePage" &&
                                                 pathname !== "/dashboard" &&
-                                                pathname.split("/")[1].trim() !== "orderDetails" &&
-                                                !pathname.includes("invoiceModal") &&(
+                                                pathname
+                                                    .split("/")[1]
+                                                    .trim() !==
+                                                    "orderDetails" &&
+                                                !pathname.includes(
+                                                    "invoiceModal"
+                                                ) && (
                                                     <button
                                                         onClick={() =>
                                                             setShowForm(

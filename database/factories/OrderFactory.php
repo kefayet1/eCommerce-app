@@ -22,7 +22,7 @@ class OrderFactory extends Factory
             //
             'ship_details' => 'Name:kefayetur rahman,Address:vill:chittagong, p/s: feni, p/o: fazilkarhat,City:Chittagong,Phone:0768856745,Zip Code:1200',
             'delivery_status' => 'pending',
-            'user_id' => rand(1,20),
+            'user_id' => rand(1,200),
         ];
     }
 }

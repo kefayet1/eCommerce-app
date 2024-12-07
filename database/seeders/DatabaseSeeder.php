@@ -2,11 +2,12 @@
 
 namespace Database\Seeders;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Product;
-use App\Models\Category;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Category;
 use App\Models\Customer;
 use App\Models\OrderItem;
 use App\Models\Transaction;
@@ -16,6 +17,7 @@ use App\Models\VariationType;
 use Illuminate\Database\Seeder;
 use App\Models\ProductVariation;
 use App\Models\CategoryVariation;
+use App\Models\WishList;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 
@@ -119,11 +121,13 @@ class DatabaseSeeder extends Seeder
 
 
         for ($i = 0; $i < 50; $i++) {
+            $price = fake()->randomNumber(4);
             $boolean = fake()->boolean();
             $remark = ["popular", "new", "top", "featured", "trending", "regular"];
             $product = Product::create([
                 'name' => fake()->name(),
-                'price' => fake()->randomNumber(4),
+                'price' => $price + rand(200, 800),
+                'original_price' => $price,
                 'unit' => fake()->randomNumber(5),
                 "short_des" => fake()->text(950),
                 "discount" => fake()->boolean(),
@@ -164,10 +168,12 @@ class DatabaseSeeder extends Seeder
 
         for ($i = 0; $i < 50; $i++) {
             $boolean = fake()->boolean();
+            $price = fake()->randomNumber(4);
             $remark = ["popular", "new", "top", "featured", "trending", "regular"];
             $product = Product::create([
                 'name' => fake()->name(),
-                'price' => fake()->randomNumber(4),
+                'price' => $price + rand(200, 800),
+                'original_price' => $price,
                 'unit' => fake()->randomNumber(5),
                 "short_des" => fake()->text(950),
                 "discount" => fake()->boolean(),
@@ -222,10 +228,12 @@ class DatabaseSeeder extends Seeder
 
         for ($i = 0; $i < 50; $i++) {
             $boolean = fake()->boolean();
+            $price = fake()->randomNumber(4);
             $remark = ["popular", "new", "top", "featured", "trending", "regular"];
             $product = Product::create([
                 'name' => fake()->name(),
-                'price' => fake()->randomNumber(4),
+                'price' => $price + rand(200, 800),
+                'original_price' => $price,
                 'unit' => fake()->randomNumber(5),
                 "short_des" => fake()->text(950),
                 "discount" => fake()->boolean(),
@@ -752,10 +760,91 @@ class DatabaseSeeder extends Seeder
         //         ->has(Product::factory()->count(3))
         //         ->create();
         Product::factory(200)->create();
-        Order::factory(200)->create();
-        OrderItem::factory(200)->create();
+        // Order::factory(200)->create();
+        // OrderItem::factory(200)->create();
         Customer::factory(200)->create();
-        Transaction::factory(200)->create();
+        // Transaction::factory(200)->create();
+
+        for ($i = 0; $i < 100; $i++) {
+            $totalPrice = 0;
+            $order = Order::create([
+                //
+                'ship_details' => 'Name:kefayetur rahman,Address:vill:chittagong, p/s: feni, p/o: fazilkarhat,City:Chittagong,Phone:0768856745,Zip Code:1200',
+                'delivery_status' => 'pending',
+                'user_id' => rand(1, 200),
+            ]);
+
+            for ($j = 0; $j < rand(2, 5); $j++) {
+                $product = Product::find(rand(1, 200));
+                $qty = rand(1, 8);
+                $totalPrice += $qty * $product->price;
+                OrderItem::create([
+                    //
+                    'sale_price' => $product->price * $qty,
+                    'qty' => $qty,
+                    'order_id' => $order->id,
+                    'product_id' => $product->id,
+                    'user_id' => rand(1, 20)
+                ]);
+            }
+
+            $transaction = Transaction::create([
+                //
+                'vat' => 5,
+                'total' => $totalPrice,
+                'payable' => $totalPrice + (($totalPrice / 100) * 5),
+                'tran_id' => uniqid(),
+                'payment_method' => fake()->boolean() ? "paypal" : "stripe",
+                'currency' => "BDT",
+                'order_id' => $order->id,
+                'payment_status' => fake()->boolean() ? 'completed' : "pending"
+            ]);
+        }
+
+        for ($i = 0; $i < 300; $i++) {
+            $totalPrice = 0;
+            $date = rand(1, 30);
+            $order = Order::create([
+                //
+                'ship_details' => 'Name:kefayetur rahman,Address:vill:chittagong, p/s: feni, p/o: fazilkarhat,City:Chittagong,Phone:0768856745,Zip Code:1200',
+                'delivery_status' => 'pending',
+                'user_id' => rand(1, 200),
+                'created_at' => Carbon::now()->subDays($date),
+                'updated_at' => Carbon::now()->subDays($date),
+            ]);
+
+            for ($j = 0; $j < rand(2, 5); $j++) {
+                $product = Product::find(rand(1, 200));
+                $qty = rand(1, 8);
+                $totalPrice += $qty * $product->price;
+                OrderItem::create([
+                    //
+                    'sale_price' => $product->price * $qty,
+                    'qty' => $qty,
+                    'order_id' => $order->id,
+                    'product_id' => $product->id,
+                    'user_id' => rand(1, 20),
+                    'created_at' => Carbon::now()->subDays($date),
+                    'updated_at' => Carbon::now()->subDays($date),
+                ]);
+            }
+
+            $transaction = Transaction::create([
+                //
+                'vat' => 5,
+                'total' => $totalPrice,
+                'payable' => $totalPrice + (($totalPrice / 100) * 5),
+                'tran_id' => uniqid(),
+                'payment_method' => fake()->boolean() ? "paypal" : "stripe",
+                'currency' => "BDT",
+                'order_id' => $order->id,
+                'payment_status' => fake()->boolean() ? 'completed' : "pending",
+                'created_at' => Carbon::now()->subDays($date),
+                'updated_at' => Carbon::now()->subDays($date)
+            ]);
+        }
+
+
 
         for ($i = 0; $i < 100; $i++) {
             $product_id = rand(1, 100);
@@ -776,5 +865,6 @@ class DatabaseSeeder extends Seeder
             }
         }
         ProductReview::factory(400)->create();
+        WishList::factory(10)->create();
     }
 }

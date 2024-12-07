@@ -20,6 +20,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SalePageController;
 use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\UserDashboardController;
+use App\Http\Controllers\WishlistController;
+use App\Models\WishList;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -120,6 +122,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     // myOrder
     Route::get("/myOrder", [MyOrderController::class, "index"]);
     Route::get("/userOrder/{id}", [MyOrderController::class, "userOrderDetail"]);
+
+    //wishlist
+    Route::get("/wishlist", [WishlistController::class, "index"]);
 });
 
 

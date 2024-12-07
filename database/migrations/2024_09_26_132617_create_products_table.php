@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('name', 100);
             $table->text("short_des");
             $table->decimal('price', 12, 2);
+            $table->decimal('original_price', 12, 2);
             $table->boolean("discount");
             $table->string("discount_price", 50);
             $table->string('unit', 50);

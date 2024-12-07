@@ -28,10 +28,13 @@ const UserDashboardNavBar = () => {
                     Review
                 </Link>
                 <Link
-                    className="inline-flex items-center gap-2 whitespace-nowrap rounded-md text-sm font-medium h-9 px-4 py-2 hover:bg-slate-50"
-                    href="/examples/forms"
+                    className={`inline-flex items-center gap-2 whitespace-nowrap rounded-md text-sm font-medium h-9 px-4 py-2 hover:bg-slate-50"
+                        href="/examples/forms ${
+                            url === "/wishlist" && "bg-black text-white"
+                        }`}
+                    href="/wishlist"
                 >
-                    Wise
+                    Wishlist
                 </Link>
             </nav>
         </div>
