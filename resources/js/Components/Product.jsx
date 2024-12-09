@@ -21,11 +21,19 @@ const Product = ({ productDetails }) => {
     console.log(ratingDivision);
 
     const handleAddWishlistItem = (prodId) => {
-        router.post("/addWishlistProd", { id: prodId });
+        router.post(
+            "/addWishlistProd",
+            { id: prodId },
+            { preserveScroll: true }
+        );
     };
 
     const handleRemoveWishlistItem = (wishListId) => {
-        router.post("/deleteWishListitem", { wishlistId: wishListId });
+        router.post(
+            "/deleteWishListitem",
+            { wishlistId: wishListId },
+            { preserveScroll: true }
+        );
     };
     return (
         <div className="rounded-lg border border-gray-200 bg-white shadow-sm">

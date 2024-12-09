@@ -13,7 +13,7 @@ const MyOrder = () => {
                 Orders
             </h2>
             <div className="flex flex-col lg:flex-row">
-               <UserDashboardNavBar/>
+                <UserDashboardNavBar />
                 <div className="lg:ml-5 w-full">
                     <div className="mx-auto dark:text-gray-800">
                         <div className="overflow-x-auto">
@@ -66,7 +66,11 @@ const MyOrder = () => {
                                                 </span>
                                             </td>
                                             <td className="p-3">
-                                                <Link href={`userOrder/${order.id}`}><CiLink size={20}/></Link>
+                                                <Link
+                                                    href={`userOrder/${order.id}`}
+                                                >
+                                                    <CiLink size={20} />
+                                                </Link>
                                             </td>
                                         </tr>
                                     ))}

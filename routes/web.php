@@ -17,6 +17,7 @@ use App\Http\Controllers\PaypalController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductEcomController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SalePageController;
 use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\UserDashboardController;
@@ -127,6 +128,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get("/wishlist", [WishlistController::class, "index"]);
     Route::post("/deleteWishListitem", [WishlistController::class, "deleteWishListItem"]);
     Route::post("/addWishlistProd", [WishlistController::class, "addWishListItem"]);
+
+    //review
+    Route::get("/reviews", [ReviewController::class, "index"]);
+    Route::post("/addReview", [ReviewController::class, "addReview"]);
 });
 
 

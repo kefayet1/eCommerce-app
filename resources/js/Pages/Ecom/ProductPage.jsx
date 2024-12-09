@@ -315,7 +315,7 @@ const ProductPage = () => {
                         {tabs === "description" ? (
                             <Description des={props.product.short_des} />
                         ) : (
-                            <Reviews />
+                            <Reviews totalReview={props.product_review.total} reviewPoint={totalRating.toFixed(1)}/>
                         )}
                     </div>
                 </div>

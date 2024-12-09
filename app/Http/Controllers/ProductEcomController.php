@@ -114,6 +114,25 @@ class ProductEcomController extends Controller
             ->select("users.id as userId", "users.name as userName", "product_reviews.*")
             ->paginate(10);
 
-        return Inertia::render('Ecom/ProductPage', ["product" => $product, 'product_variation' => $variationArr, "product_review" => $productReview]);
+        $reviews = DB::table('product_reviews')
+            ->select('rating', DB::raw('COUNT(*) as count'))
+            ->where('product_id', $productId)
+            ->groupBy('rating')
+            ->orderBy('rating', 'desc')
+            ->get();
+
+        $totalReviews = $reviews->sum('count');
+
+
+        $progressData = $reviews->map(function ($review) use ($totalReviews) {
+            return [
+                'rating' => $review->rating,
+                'count' => $review->count,
+                'percentage' => $totalReviews ? ($review->count / $totalReviews) * 100 : 0,
+            ];
+        });
+
+        // dd($progressData);
+        return Inertia::render('Ecom/ProductPage', ["product" => $product, 'product_variation' => $variationArr, "product_review" => $productReview, "reviewProgressData" => $progressData]);
     }
 }
