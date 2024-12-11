@@ -9,6 +9,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\VariationType;
 use App\Models\ProductVariation;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ProductEcomController extends Controller
@@ -16,35 +17,66 @@ class ProductEcomController extends Controller
     //
     public function index()
     {
-        $popularProduct = DB::table("products as p")
-            ->leftJoin("product_reviews as pr", "p.id", "=", "pr.product_id")
-            ->leftJoin("wish_lists as wl", "p.id", "=", "wl.product_id")
-            ->where("p.remark", "=", "popular")
-            ->select("p.id", "p.name", "p.short_des", "p.unit", "p.star", "p.remark", "p.category_id", "p.created_at", "p.price", DB::raw('SUM(pr.rating) as sumOfRating'), DB::raw("COUNT(pr.id) as totalRating"), "wl.id as wishListItemId", "wl.is_active as wishListItemActive")
-            ->groupBy("p.id", "p.name", "p.short_des", "p.unit", "p.star", "p.remark", "p.category_id", "p.created_at", "p.price", "wishListItemId", "wishListItemActive")
-            ->orderByDesc(DB::raw('SUM(pr.rating)'))
-            ->take(4)
-            ->get();
-        // dd($popularProduct);
-        $featuredProduct = DB::table("products as p")
-            ->leftJoin("product_reviews as pr", "p.id", "=", "pr.product_id")
-            ->leftJoin("wish_lists as wl", "p.id", "=", "wl.product_id")
-            ->where("p.remark", "=", "featured")
-            ->select("p.id", "p.name", "p.short_des", "p.unit", "p.star", "p.remark", "p.category_id", "p.created_at", "p.price", DB::raw('SUM(pr.rating) as sumOfRating'), DB::raw("COUNT(pr.id) as totalRating"), "wl.id as wishListItemId", "wl.is_active as wishListItemActive")
-            ->groupBy("p.id", "p.name", "p.short_des", "p.unit", "p.star", "p.remark", "p.category_id", "p.created_at", "p.price", "wishListItemId", "wishListItemActive")
-            ->orderByDesc(DB::raw('SUM(pr.rating)'))
-            ->take(8)
-            ->get();
-        $topSellingProduct = DB::table("products as p")
-            ->leftJoin("product_reviews as pr", "p.id", "=", "pr.product_id")
-            ->leftJoin("wish_lists as wl", "p.id", "=", "wl.product_id")
-            ->where("p.remark", "=", "top")
-            ->select("p.id", "p.name", "p.short_des", "p.unit", "p.star", "p.remark", "p.category_id", "p.created_at", "p.price", DB::raw('SUM(pr.rating) as sumOfRating'), DB::raw("COUNT(pr.id) as totalRating"), "wl.id as wishListItemId", "wl.is_active as wishListItemActive")
-            ->groupBy("p.id", "p.name", "p.short_des", "p.unit", "p.star", "p.remark", "p.category_id", "p.created_at", "p.price", "wishListItemId", "wishListItemActive")
-            ->orderByDesc(DB::raw('SUM(pr.rating)'))
-            ->take(4)
-            ->get();
 
+        if (Auth::check()) {
+            $products = DB::table("products as p")
+                ->leftJoin("product_reviews as pr", "p.id", "=", "pr.product_id")
+                ->leftJoin("wish_lists as wl", function ($join) {
+                    $join->on("wl.product_id", "=", "p.id")
+                        ->where("wl.user_id", "=", Auth::user()->id);
+                })
+                ->whereIn("p.remark", ["popular", "featured", "top"])
+                ->select("p.id", "p.name", "p.short_des", "p.unit", "p.star", "p.remark", "p.category_id", "p.created_at", "p.price", DB::raw('SUM(pr.rating) as sumOfRating'), DB::raw("COUNT(pr.id) as totalRating"), "wl.id as wishListItemId", "wl.is_active as wishListItemActive")
+                ->groupBy("p.id", "p.name", "p.short_des", "p.unit", "p.star", "p.remark", "p.category_id", "p.created_at", "p.price", "wishListItemId", "wishListItemActive")
+                ->orderByDesc(DB::raw('SUM(pr.rating)'))
+                // ->take(4)
+                ->get();
+        } else {
+            $products = DB::table("products as p")
+                ->leftJoin("product_reviews as pr", "p.id", "=", "pr.product_id")
+                ->leftJoin("wish_lists as wl", "p.id", "=", "wl.product_id")
+                ->whereIn("p.remark", ["popular", "featured", "top"])
+                ->select("p.id", "p.name", "p.short_des", "p.unit", "p.star", "p.remark", "p.category_id", "p.created_at", "p.price", DB::raw('SUM(pr.rating) as sumOfRating'), DB::raw("COUNT(pr.id) as totalRating"))
+                ->groupBy("p.id", "p.name", "p.short_des", "p.unit", "p.star", "p.remark", "p.category_id", "p.created_at", "p.price")
+                ->orderByDesc(DB::raw('SUM(pr.rating)'))
+                // ->take(4)
+                ->get();
+        }
+
+        // dd($products->groupBy("remark")['top']->take(4));
+        $productGroupRemark = $products->groupBy("remark");
+        $popularProduct = $productGroupRemark['top']->take(4);
+        // DB::table("products as p")
+        //     ->leftJoin("product_reviews as pr", "p.id", "=", "pr.product_id")
+        //     ->leftJoin("wish_lists as wl", "p.id", "=", "wl.product_id")
+        //     ->where("p.remark", "=", "popular")
+        //     ->select("p.id", "p.name", "p.short_des", "p.unit", "p.star", "p.remark", "p.category_id", "p.created_at", "p.price", DB::raw('SUM(pr.rating) as sumOfRating'), DB::raw("COUNT(pr.id) as totalRating"), "wl.id as wishListItemId", "wl.is_active as wishListItemActive")
+        //     ->groupBy("p.id", "p.name", "p.short_des", "p.unit", "p.star", "p.remark", "p.category_id", "p.created_at", "p.price", "wishListItemId", "wishListItemActive")
+        //     ->orderByDesc(DB::raw('SUM(pr.rating)'))
+        //     ->take(4)
+        //     ->get();
+        // dd($popularProduct);
+        $featuredProduct = $productGroupRemark['featured']->take(8);
+        // DB::table("products as p")
+        //     ->leftJoin("product_reviews as pr", "p.id", "=", "pr.product_id")
+        //     ->leftJoin("wish_lists as wl", "p.id", "=", "wl.product_id")
+        //     ->where("p.remark", "=", "featured")
+        //     ->select("p.id", "p.name", "p.short_des", "p.unit", "p.star", "p.remark", "p.category_id", "p.created_at", "p.price", DB::raw('SUM(pr.rating) as sumOfRating'), DB::raw("COUNT(pr.id) as totalRating"), "wl.id as wishListItemId", "wl.is_active as wishListItemActive")
+        //     ->groupBy("p.id", "p.name", "p.short_des", "p.unit", "p.star", "p.remark", "p.category_id", "p.created_at", "p.price", "wishListItemId", "wishListItemActive")
+        //     ->orderByDesc(DB::raw('SUM(pr.rating)'))
+        //     ->take(8)
+        //     ->get();
+        
+        $topSellingProduct = $productGroupRemark['popular']->take(4);
+        // DB::table("products as p")
+        //     ->leftJoin("product_reviews as pr", "p.id", "=", "pr.product_id")
+        //     ->leftJoin("wish_lists as wl", "p.id", "=", "wl.product_id")
+        //     ->where("p.remark", "=", "top")
+        //     ->select("p.id", "p.name", "p.short_des", "p.unit", "p.star", "p.remark", "p.category_id", "p.created_at", "p.price", DB::raw('SUM(pr.rating) as sumOfRating'), DB::raw("COUNT(pr.id) as totalRating"), "wl.id as wishListItemId", "wl.is_active as wishListItemActive")
+        //     ->groupBy("p.id", "p.name", "p.short_des", "p.unit", "p.star", "p.remark", "p.category_id", "p.created_at", "p.price", "wishListItemId", "wishListItemActive")
+        //     ->orderByDesc(DB::raw('SUM(pr.rating)'))
+        //     ->take(4)
+        //     ->get();
         //category tree
         $categories = Category::select("id", "name", "parent_id")->get();
         $groupCategory = $categories->groupBy("parent_id");

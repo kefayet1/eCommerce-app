@@ -116,22 +116,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post("/editAttribute", [CustomAttributeController::class, "editAttribute"]);
     Route::post("/deleteAttribute", [CustomAttributeController::class, "deleteAttribute"]);
     Route::post("/toggleAttributeActive", [CustomAttributeController::class, "toggleAttributeActive"]);
-
-    // User Dashboard 
-    Route::get("/myAccount", [UserDashboardController::class, "index"]);
-
-    // myOrder
-    Route::get("/myOrder", [MyOrderController::class, "index"]);
-    Route::get("/userOrder/{id}", [MyOrderController::class, "userOrderDetail"]);
-
-    //wishlist
-    Route::get("/wishlist", [WishlistController::class, "index"]);
-    Route::post("/deleteWishListitem", [WishlistController::class, "deleteWishListItem"]);
-    Route::post("/addWishlistProd", [WishlistController::class, "addWishListItem"]);
-
-    //review
-    Route::get("/reviews", [ReviewController::class, "index"]);
-    Route::post("/addReview", [ReviewController::class, "addReview"]);
 });
 
 
@@ -143,11 +127,27 @@ Route::middleware('auth')->group(function () {
     //Order
     Route::post("/createOrder", [OrderController::class, "OrderCreate"]);
 
+    // User Dashboard 
+    Route::get("/myAccount", [UserDashboardController::class, "index"]);
+
+
+    // myOrder
+    Route::get("/myOrder", [MyOrderController::class, "index"]);
+    Route::get("/userOrder/{id}", [MyOrderController::class, "userOrderDetail"]);
+
     //Payment success
     Route::get("/OrderSuccess/{transactionId}/{orderId}", [OrderController::class, "paypalOrderSuccess"])->name('paypalSuccess');
     Route::get("/StripeSuccess/{transactionId}/{orderId}", [OrderController::class, "stripeOrderSuccess"])->name("stripeSuccess");
     Route::post("/sslCommerzSuccess", [OrderController::class, "sslCommerzOrderSuccess"])->name("sslCommerzSuccess");
 
+    //wishlist
+    Route::get("/wishlist", [WishlistController::class, "index"]);
+    Route::post("/deleteWishListitem", [WishlistController::class, "deleteWishListItem"]);
+    Route::post("/addWishlistProd", [WishlistController::class, "addWishListItem"]);
+
+    //review
+    Route::get("/reviews", [ReviewController::class, "index"]);
+    Route::post("/addReview", [ReviewController::class, "addReview"]);
 });
 
 

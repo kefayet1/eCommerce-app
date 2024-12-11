@@ -19,8 +19,6 @@ class WishlistController extends Controller
             ->where("wl.is_active", "=", true)
             ->select("wl.id as wishListItemId", "wl.is_active", "p.id", "p.name", "p.short_des", "p.price", "p.original_price", "p.discount", "p.discount_price", "p.discount", "p.unit", "p.star", "p.remark", "p.img_url", "p.user_id", "p.category_id", "p.brand_id", )
             ->get();
-
-        // dd($wishlist);
         return Inertia::render("Ecom/UserDashboard/Wishlist", ["wishlist" => $wishlist]);
     }
 
@@ -33,10 +31,12 @@ class WishlistController extends Controller
 
     public function addWishListItem(Request $request)
     {
-        WishList::create([
+       $wishList =  WishList::create([
             "user_id" => Auth::user()->id,
             "product_id" => $request->input("id"),
             "is_active" => true
         ]);
+
+        // dd(Auth::user()->id);
     }
 }
